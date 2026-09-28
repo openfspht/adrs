@@ -1,0 +1,8 @@
+.git
+.gitignore
+.attic
+book
+src
+node_modules
+Dockerfile
+.dockerignore
