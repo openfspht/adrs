@@ -1,0 +1,26 @@
+[book]
+title = "Les ADR OpenFSP"
+description = "La spécification OpenFSP : un protocole ouvert d'interopérabilité horizontale entre opérateurs de paiement."
+language = "fr"
+src = "src"
+
+[output.html]
+smart-punctuation = true
+no-section-label = true
+git-repository-url = "https://github.com/openfspht/adr"
+edit-url-template = "https://github.com/openfspht/adr/edit/main/text/{path}"
+site-url = "/adr/"
+additional-js = ["mermaid.min.js", "mermaid-init.js"]
+
+[output.html.search]
+heading-split-level = 0
+
+[output.html.playground]
+runnable = false
+
+[preprocessor.mermaid]
+command = "mdbook-mermaid"
+
+[build]
+build-dir = "book"
+extra-watch-dirs = ["text"]
