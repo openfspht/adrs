@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
-"""Build the mdBook sources from text/ and run mdbook.
+"""Build the mdBook sources from spec/ and text/, then run mdbook.
 
-src/ is output: it is rebuilt from scratch every run and is in .gitignore. The
-ADRs live in text/ and are never written to from here.
+src/ is output: rebuilt from scratch on every run and listed in .gitignore.
 """
 
 import os
@@ -12,84 +11,77 @@ import subprocess
 import sys
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
-TEXT = os.path.join(ROOT, "text")
 SRC = os.path.join(ROOT, "src")
+TEXT = os.path.join(ROOT, "text")
 
-GROUPS = [
-    ("Introduction", ["0001"]),
-    ("Fondations", ["0002", "0003", "0004", "0005"]),
-    ("Le protocole", ["0006", "0007", "0008", "0009", "0010"]),
-    ("Paiement de proximité", ["0011", "0012"]),
-    ("Implémentation", ["0013", "0014", "0015"]),
-    ("Processus", ["0016"]),
+SPEC_GROUPS = [
+    ("Fondations", ["modele-de-donnees", "cycle-de-vie", "idempotence", "erreurs"]),
+    ("Protocole", ["api-paiements", "capacites", "webhooks", "authentification"]),
+    ("Paiement au comptoir", ["demandes-de-confirmation", "proximite"]),
+    ("Conformité", ["conformite", "marques"]),
+    ("Documents informatifs", ["architecture", "iso-20022", "adaptateurs", "serveur-simule"]),
 ]
 
-SHORT = {
-    "0001": "Architecture et périmètre",
-    "0002": "Modèle de données",
-    "0003": "Cycle de vie",
-    "0004": "Idempotence",
-    "0005": "Taxonomie des erreurs",
-    "0006": "API HTTP",
-    "0007": "Découverte de capacités",
-    "0008": "Webhooks",
-    "0009": "Authentification",
-    "0010": "ISO 20022",
-    "0011": "Demandes de confirmation",
-    "0012": "Paiement de proximité",
-    "0013": "Adaptateurs",
-    "0014": "Serveur simulé",
-    "0015": "Conformité",
-    "0016": "Marques et nom",
+SPEC_TITLES = {
+    "modele-de-donnees": "Modèle de données",
+    "cycle-de-vie": "Cycle de vie",
+    "idempotence": "Idempotence",
+    "erreurs": "Erreurs",
+    "api-paiements": "API des paiements",
+    "capacites": "Capacités",
+    "webhooks": "Webhooks",
+    "authentification": "Authentification",
+    "demandes-de-confirmation": "Demandes de confirmation",
+    "proximite": "Paiement de proximité",
+    "conformite": "Conformité",
+    "marques": "Usage du nom",
+    "architecture": "Architecture",
+    "iso-20022": "ISO 20022",
+    "adaptateurs": "Adaptateurs",
+    "serveur-simule": "Serveur simulé",
 }
 
-ADR = re.compile(r"^\d{4}-.+\.md$")
+ADR = re.compile(r"^(\d{4})-.+\.md$")
+ADR_TITLE = re.compile(r"^# ADR-\d{4} : (.+)$", re.M)
 
 
-def link(source, name):
-    target = os.path.join(SRC, name)
-    if not os.path.exists(target):
-        os.symlink(source, target)
+def adr_entries():
+    entries = []
+    for name in sorted(os.listdir(TEXT)):
+        match = ADR.match(name)
+        if not match:
+            continue
+        with open(os.path.join(TEXT, name), encoding="utf-8") as f:
+            title = ADR_TITLE.search(f.read()).group(1)
+        entries.append(f"- [{match.group(1)} {title}](text/{name})")
+    return entries
 
 
-def write_introduction():
-    # README links point into text/ for GitHub; in the book the ADRs sit beside it.
-    with open(os.path.join(ROOT, "README.md"), encoding="utf-8") as f:
-        readme = f.read()
-    with open(os.path.join(SRC, "introduction.md"), "w", encoding="utf-8") as out:
-        out.write(readme.replace("](text/", "]("))
+def summary():
+    lines = ["[Introduction](introduction.md)", "", "# Spécification", "",
+             "- [Conventions](spec/README.md)"]
+    for group, names in SPEC_GROUPS:
+        lines.append(f"- [{group}]()")
+        lines += [f"  - [{SPEC_TITLES[n]}](spec/{n}.md)" for n in names]
+    lines += ["", "# Décisions", ""] + adr_entries()
+    lines += ["", "---", "", "[Références](text/references.md)", ""]
+    return "\n".join(lines)
 
 
 def main():
     shutil.rmtree(SRC, ignore_errors=True)
     os.mkdir(SRC)
-
-    files = sorted(f for f in os.listdir(TEXT) if ADR.match(f))
-
-    for name in files + ["references.md"]:
-        source = os.path.join(TEXT, name)
-        if os.path.exists(source):
-            link(source, name)
-    write_introduction()
-
-    summary = ["[Introduction](introduction.md)", ""]
-    for title, numbers in GROUPS:
-        chapters = [next((f for f in files if f.startswith(n)), None) for n in numbers]
-        chapters = [(n, f) for n, f in zip(numbers, chapters) if f]
-        if not chapters:
-            continue
-        summary += [f"# {title}", ""]
-        summary += [f"- [{n} {SHORT[n]}]({f})" for n, f in chapters]
-        summary.append("")
-    summary += ["---", "", "[Références](references.md)", ""]
+    for folder in ("spec", "text"):
+        os.symlink(os.path.join(ROOT, folder), os.path.join(SRC, folder))
+    shutil.copyfile(os.path.join(ROOT, "README.md"), os.path.join(SRC, "introduction.md"))
 
     with open(os.path.join(SRC, "SUMMARY.md"), "w", encoding="utf-8") as out:
-        out.write("\n".join(summary))
+        out.write(summary())
 
     result = subprocess.run(["mdbook", "build"], cwd=ROOT)
     if result.returncode != 0:
         sys.exit(result.returncode)
-    print(f"{len(files)} ADR")
+    print(f"{len(adr_entries())} ADR, {sum(len(n) for _, n in SPEC_GROUPS)} documents de spécification")
 
 
 if __name__ == "__main__":
