@@ -1,0 +1,8 @@
+# The English editions the French were translated from. Kept on disk so the
+# French can be checked against them, never published.
+.attic/
+
+src/
+book/
+node_modules/
+.DS_Store
