@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  actionlint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          enable-cache: false
+      - run: uvx --from actionlint-py==1.7.12.25 actionlint
+
+  image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: build
+        run: docker build -t adrs:ci .
+      - name: smoke test
+        run: |
+          docker run -d -p 8080:8080 adrs:ci
+          for _ in $(seq 1 20); do
+            curl -sf http://localhost:8080/health && break
+            sleep 0.5
+          done
+          curl -sf http://localhost:8080/index.html > /dev/null
+          curl -sf http://localhost:8080/spec/README.html > /dev/null
+          curl -sf http://localhost:8080/text/0003-payment-lifecycle.html > /dev/null
