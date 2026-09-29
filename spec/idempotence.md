@@ -100,10 +100,17 @@ d'idempotence.
 
 **7.1.** Avant de retenter auprès de l'opérateur une opération au dénouement indéterminé, la
 passerelle DOIT tenter de l'établir par une source autoritative
-([cycle de vie §6.5](../text/0003-payment-lifecycle.md)).
+([cycle de vie §6.5](cycle-de-vie.md)).
 
-**7.2.** Si l'opérateur offre un mécanisme d'idempotence, la passerelle DOIT l'utiliser, avec
-une valeur dérivée de façon déterministe de la `reference`.
+**7.2.** La passerelle DOIT transmettre à l'opérateur un identifiant de commande dérivé de la
+`reference` de façon déterministe : la `reference` elle-même si elle respecte l'alphabet et la
+longueur de l'opérateur, sinon l'encodage base32 en minuscules de son SHA-256, tronqué à la
+longueur maximale de l'opérateur et à 26 caractères au moins. Si l'opérateur offre une
+idempotence ou une recherche par identifiant de commande, la passerelle DOIT s'en servir pour
+établir le dénouement (§7.1).
+
+**7.2.1.** Un identifiant de requête exigé par l'opérateur à chaque appel (`requestId`) est
+distinct de l'identifiant de commande : un doublon rejeté n'est pas une idempotence.
 
 **7.3.** Si l'opérateur n'offre ni idempotence ni recherche par référence, la passerelle NE
 DOIT PAS renvoyer automatiquement une opération indéterminée. Le paiement reste `pending` et
