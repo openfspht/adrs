@@ -16,7 +16,7 @@ paiement réussi mais aucune de ces défaillances à la demande.
 - Un serveur qui remplace les opérateurs, avec cinq opérateurs simulés aux capacités inégales ;
   `mock_beta` n'a aucune source automatique de finalité.
 - Jamais plus permissif qu'un opérateur réel.
-- Dix-neuf scénarios de défaillance déclenchés par un préfixe réservé sur `reference`.
+- Vingt et un scénarios de défaillance déclenchés par un préfixe réservé sur `reference`.
 - Surface de contrôle séparée pour avancer le temps et résoudre les attentes.
 - Déterministe, sans état persistant.
 - Impossible à confondre avec la production : identifiants `mock_`, annonce au démarrage,

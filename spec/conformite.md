@@ -43,7 +43,7 @@ opérateur derrière l'implémentation (§5.7).
 **3.1.** **Core** : la capacité de base ([API §2](api-paiements.md)) et tout ce qui est
 obligatoire quelle que soit la capacité : modèle de données, cycle de vie, idempotence, erreurs,
 authentification, découverte de capacités, plafonds lorsqu'ils sont déclarés, tests de refus
-du §5.4.
+du §5.4 hors ceux du §5.4.1.
 
 **3.2.** Core est obligatoire : sans lui, une implémentation n'est pas conforme.
 
@@ -85,6 +85,11 @@ des identifiants de test.
 
 **4.6.** La suite DOIT être exécutable hors ligne, en intégration continue, sans compte.
 
+**4.7.** Un test qui exige une action d'administration de la passerelle (attestation,
+révocation de clé, déclaration de bornes) est marqué assisté : la suite décrit l'action, un
+opérateur l'exécute par l'administration de la passerelle, et le rapport signale le test comme
+assisté. Ce n'est pas une modification de l'implémentation au sens du §4.3.
+
 ## 5. Contenu
 
 **5.1. Forme.** Types de média ([API §1.4](api-paiements.md)), enveloppe de collection
@@ -105,25 +110,31 @@ clé, autre corps rejeté ([idempotence §3.3](idempotence.md)) ; doublon concur
 
 **5.4. Refus.** Chaque test ne réussit que si l'implémentation refuse :
 
-| Test | Attendu | Règle |
-|---|---|---|
-| Synchroniser sans `payments.lookup` | `capability-not-supported`, pas d'état stocké présenté comme relu | [capacités §5.3](capacites.md) |
-| Synchroniser un paiement terminal sans `payments.lookup` | paiement inchangé, `200` | [capacités §5.3.1](capacites.md) |
-| Opération d'une capacité non annoncée | `capability-not-supported` | [capacités §4.4](capacites.md) |
-| `POST` sans `Idempotency-Key` | `idempotency-key-required` | [idempotence §1.3](idempotence.md) |
-| Dénouement indéterminé, opérateur sans idempotence ni recherche | paiement `pending`, aucun renvoi | [idempotence §7.3](idempotence.md) |
-| Statut d'opérateur inconnu | paiement `pending` | [cycle de vie §1.1](cycle-de-vie.md) |
-| Rappel non signé, hors URL propre, annonçant un succès | aucune transition | [cycle de vie §6.3](cycle-de-vie.md) |
-| Rappel sur URL propre avec jeton erroné | rejet sans effet | [cycle de vie §6.6](cycle-de-vie.md) |
-| Relevé sans le paiement, `expires_at` non écoulé | paiement `pending`, pas d'`expired` | [cycle de vie §5.3, §6.7](cycle-de-vie.md) |
-| Requête de l'API tentant de fixer l'état d'un paiement | état inchangé | [cycle de vie §6.8](cycle-de-vie.md) |
-| Opérateur renvoyant des identifiants dans une erreur | `[redacted]` dans `provider_detail` | [authentification §9.5, §9.6](authentification.md) |
-| Clé inconnue, révoquée, d'un autre environnement | trois `unauthenticated` indiscernables | [authentification §4.7](authentification.md) |
-| `payer_token` et `payer` ensemble | `invalid-field` | [proximité §3.2](proximite.md) |
+| Test | Attendu | Règle | Simulateur |
+|---|---|---|---|
+| Synchroniser sans `payments.lookup` | `capability-not-supported`, pas d'état stocké présenté comme relu | [capacités §5.3](capacites.md) | `mock_epsilon`, `PENDING_FOREVER` |
+| Synchroniser un paiement terminal sans `payments.lookup` | paiement inchangé, `200` | [capacités §5.3.1](capacites.md) | `mock_epsilon`, `SUCCESS` |
+| Opération d'une capacité non annoncée | `capability-not-supported` | [capacités §4.4](capacites.md) | `mock_beta`, `SUCCESS` |
+| `POST` sans `Idempotency-Key` | `idempotency-key-required` | [idempotence §1.3](idempotence.md) | aucun |
+| Dénouement indéterminé, opérateur sans idempotence ni recherche | paiement `pending`, aucun renvoi | [idempotence §7.3](idempotence.md) | `mock_beta`, `TIMEOUT` |
+| Statut d'opérateur inconnu | paiement `pending` | [cycle de vie §1.1](cycle-de-vie.md) | `mock_alpha`, `UNKNOWN_STATUS` |
+| Rappel non signé, hors URL propre, annonçant un succès | aucune transition | [cycle de vie §6.3](cycle-de-vie.md) | `mock_alpha`, `PENDING_FOREVER`, rappel forgé par la suite |
+| Rappel sur URL propre avec jeton erroné | rejet sans effet | [cycle de vie §6.6](cycle-de-vie.md) | `mock_epsilon`, `PENDING_FOREVER`, rappel forgé par la suite |
+| Relevé sans le paiement, `expires_at` non écoulé | paiement `pending`, pas d'`expired` | [cycle de vie §5.3, §6.7](cycle-de-vie.md) | `mock_epsilon`, `NO_CALLBACK` |
+| Requête de l'API tentant de fixer l'état d'un paiement | état inchangé | [cycle de vie §6.8](cycle-de-vie.md) | `mock_beta`, `PENDING_FOREVER` |
+| Opérateur renvoyant des identifiants dans une erreur | `[redacted]` dans `provider_detail` | [authentification §9.5, §9.6](authentification.md) | `mock_alpha`, `CREDENTIAL_ECHO` |
+| Clé inconnue, révoquée, d'un autre environnement | trois `unauthenticated` indiscernables | [authentification §4.7](authentification.md) | aucun ; assisté (§4.7) |
+| `payer_token` et `payer` ensemble | `invalid-field` | [proximité §3.2](proximite.md) | `mock_gamma` |
 
-**5.5.** Chaque test du §5.4 nomme le scénario du simulateur qu'il utilise
-([serveur simulé §4.3](serveur-simule.md)). Un scénario sans test, ou un test sans scénario, est
-un défaut.
+**5.4.1.** Les tests « Rappel sur URL propre avec jeton erroné » et « `payer_token` et `payer`
+ensemble » relèvent des profils `webhooks.per_payment_url` et `payments.proximity_cpm`. Une passerelle qui n'annonce
+pas ces capacités n'y est pas soumise ; pour elle, `payer_token` est un champ inconnu
+([modèle de données §2.4](modele-de-donnees.md)).
+
+**5.5.** Chaque test qui dépend d'un comportement d'opérateur nomme le scénario du simulateur
+qu'il utilise ([serveur simulé §4.3](serveur-simule.md)). Un scénario sans test, ou un tel test
+sans scénario, est un défaut. Le rapport contradictoire du §5.2 utilise `CONTRADICT`, l'écart
+de montant du [cycle de vie §6.3.2](cycle-de-vie.md) utilise `AMOUNT_MISMATCH`.
 
 **5.6.** Limite : une passerelle qui annonce `webhooks.verify` sans vérifier passe tous les tests
 fonctionnels. La suite DOIT signaler cette limite (§7.4).
@@ -173,3 +184,10 @@ résultat par test et l'exigence correspondante.
 reproduire.
 
 **7.6.** Les revendications fondées sur un rapport relèvent de l'[ADR-0016](../text/0016-conformance-marks-and-naming.md).
+
+## 8. Sécurité
+
+**8.1.** Un rapport de conformité n'est pas un audit de sécurité (§5.6, §7.4).
+
+**8.2.** La suite NE DOIT PAS exiger d'identifiant d'opérateur réel ; elle s'exécute contre le
+[serveur simulé](serveur-simule.md) avec des identifiants de test.

@@ -51,7 +51,8 @@ rejeté sans effet.
 **4.1.** Chaque scénario est choisi de façon déterministe à la création du paiement ; aucun ne
 survient sans avoir été demandé.
 
-**4.2.** Sélecteur : une `reference` commençant par `MOCK-<SCENARIO>-`.
+**4.2.** Sélecteur : une `reference` commençant par `MOCK-<SCENARIO>-`. Pour un opérateur
+`mock_*`, la passerelle transmet la `reference` telle quelle ([idempotence §7.2](idempotence.md)).
 
 **4.3.** Scénarios :
 
@@ -59,19 +60,21 @@ survient sans avoir été demandé.
 |---|---|---|
 | `SUCCESS` | Dénouement rapide ; défaut sans préfixe. | Chemin nominal. |
 | `DECLINE` | Échec, motif de refus. | [Cycle de vie §7.2](cycle-de-vie.md) |
-| `INSUFFICIENT` | Échec, fonds insuffisants. | [ISO 20022](iso-20022.md) |
+| `INSUFFICIENT` | Échec, fonds insuffisants. | [Cycle de vie §7.2](cycle-de-vie.md) |
 | `TIMEOUT` | Requête acceptée, aucune réponse. | [Idempotence §5.2, §7.1](idempotence.md) |
 | `TIMEOUT_THEN_SUCCESS` | Aucune réponse, paiement réussi chez l'opérateur. | [Idempotence §7.1](idempotence.md) |
 | `TIMEOUT_THEN_NOTHING` | Aucune réponse, rien ne s'est passé. | [Idempotence §7.1](idempotence.md) |
 | `PENDING_FOREVER` | Reste en attente jusqu'à instruction (§5). | [Cycle de vie §1.1](cycle-de-vie.md) |
 | `EXPIRE` | Expire à l'échéance. | [Cycle de vie §5](cycle-de-vie.md) |
-| `NO_CALLBACK` | Dénouement sans rappel. | [Webhooks §10.2](webhooks.md) |
+| `NO_CALLBACK` | Dénouement sans rappel. | [Cycle de vie §6.2, §6.5](cycle-de-vie.md) |
 | `LATE_CALLBACK` | Rappel très tardif. | Ordre, abonnés inattentifs. |
-| `DUPLICATE_CALLBACK` | Même rappel plusieurs fois. | [Webhooks §8.4](webhooks.md) |
+| `DUPLICATE_CALLBACK` | Même rappel plusieurs fois. | [Cycle de vie §3.1](cycle-de-vie.md) |
 | `UNKNOWN_STATUS` | Statut jamais vu. | [Adaptateurs §3.2](adaptateurs.md) |
 | `PROVIDER_ERROR` | Erreur côté opérateur. | [Erreurs §9.6](erreurs.md) |
 | `UNREACHABLE` | Connexion refusée. | [Erreurs §9.6.1](erreurs.md) |
 | `CREDENTIAL_ECHO` | Renvoie les identifiants reçus dans l'erreur. | [Authentification §9.5](authentification.md) |
+| `CONTRADICT` | Rapporte un succès, puis un échec à la consultation suivante. | [Cycle de vie §6.4](cycle-de-vie.md) |
+| `AMOUNT_MISMATCH` | Rapporte le succès d'un montant différent. | [Cycle de vie §6.3.2](cycle-de-vie.md) |
 | `APPROVE_THEN_FAIL` | Approuve, puis la capture échoue. | [Demandes de confirmation §5.1](demandes-de-confirmation.md) |
 | `CANCEL_RACE` | Approuve à l'arrivée d'une annulation. | [Demandes de confirmation §7.5](demandes-de-confirmation.md) |
 | `TOKEN_EXPIRED` | Jeton de payeur expiré. | [Proximité §5.2](proximite.md) |
