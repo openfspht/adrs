@@ -22,7 +22,10 @@ socle devrait être implémentable par chaque opérateur.
 - Synchronisation en `POST` (non sûre : elle appelle l'opérateur), exemptée d'idempotence : une
   réponse rejouée renverrait un état périmé.
 - Une référence inconnue donne `200` avec `data` vide.
-- Le retour du payeur sur `return_url` ne prouve rien.
+- Le retour du payeur sur `return_url` ne prouve rien. Si l'opérateur ne prend qu'une URL de
+  retour fixe (MonCash), la passerelle la relaie vers la `return_url` du paiement.
+- Langue de la page du payeur (`locale` : `fr`, `ht`, `en`), transmise si l'opérateur la
+  prend en charge.
 - `fee` est rapporté, jamais fourni par le client.
 
 ## Conséquences

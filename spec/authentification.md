@@ -5,8 +5,9 @@ Décision : [ADR-0009](../text/0009-authentication-and-credentials.md).
 ## 1. Schéma
 
 **1.1.** Un client s'authentifie par une clé d'API porteur. Tous les points d'accès sont
-authentifiés, sauf le descripteur de service ([capacités §3.1](capacites.md)) et l'ensemble de
-clés de webhook ([webhooks §6.1](webhooks.md)).
+authentifiés, sauf le descripteur de service ([capacités §3.1](capacites.md)), l'ensemble de
+clés de webhook ([webhooks §6.1](webhooks.md)) et les points appelés par l'opérateur ou le
+payeur : rappels ([cycle de vie §6.6](cycle-de-vie.md)) et retour ([API §7.4](api-paiements.md)).
 
 **1.2.** La passerelle NE DOIT PAS offrir de mode non authentifié pour un autre point d'accès,
 y compris en développement.

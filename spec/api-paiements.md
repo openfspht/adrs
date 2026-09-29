@@ -167,6 +167,7 @@ POST /v1/payments
 | `description` | FACULTATIF | |
 | `return_url` | conditionnel | OBLIGATOIRE si l'opérateur utilise `redirect` (§5.1.3). |
 | `expires_at` | FACULTATIF | Demande, pas garantie (§5.1.4). |
+| `locale` | FACULTATIF | Langue de la page du payeur : `fr`, `ht` ou `en` (§5.1.7). |
 | `metadata` | FACULTATIF | |
 
 **5.1.1.** La passerelle NE DOIT PAS choisir l'opérateur à la place du client.
@@ -191,6 +192,10 @@ PEUT différer de la demande ou être absent. Un client DOIT relire la valeur.
 
 **5.1.6.** Sur `504 provider-timeout` ou `500 internal-error`, `effect` vaut `unknown` : un
 client DOIT résoudre en renvoyant avec la même clé ou en recherchant la référence.
+
+**5.1.7.** La passerelle transmet `locale` à l'opérateur s'il figure dans les `locales` annoncées
+([capacités §3.2.2](capacites.md)), et l'ignore sinon. Une autre valeur que `fr`, `ht` ou `en`
+DOIT être rejetée avec `invalid-field`.
 
 ### 5.2. Lire un paiement
 
@@ -253,6 +258,18 @@ attaquant.
 
 **7.3.** Au retour, un client DOIT lire le paiement auprès de la passerelle et afficher le
 résultat de cette seule réponse.
+
+**7.4.** Si l'opérateur ne prend pas d'URL de retour par paiement, la passerelle DOIT exposer un
+point de retour par opérateur, que l'exploitant déclare chez celui-ci. Ce point :
+
+- retrouve le paiement par l'identifiant de commande reçu ([idempotence §7.2](idempotence.md)) ;
+- DEVRAIT déclencher une synchronisation (§5.3) ;
+- redirige en `303` vers la `return_url` enregistrée du paiement, jamais vers une URL reçue en
+  paramètre ;
+- répond `404` sans redirection si le paiement est inconnu.
+
+**7.5.** Le point de retour n'est pas authentifié ([authentification §1.1](authentification.md))
+et DOIT être limité en débit.
 
 ## 8. Flux type
 

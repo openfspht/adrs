@@ -101,7 +101,8 @@ Authentifié.
         "next_actions": ["redirect"],
         "payer_required": false,
         "return_url_required": true,
-        "expiry_guaranteed": true
+        "expiry_guaranteed": true,
+        "locales": []
       }
     }
   ]
@@ -126,6 +127,7 @@ Authentifié.
 | `return_url_required` | booléen | `return_url` exigée à la création. |
 | `expiry_guaranteed` | booléen | Garantie du [cycle de vie §5.3](cycle-de-vie.md) c. |
 | `limits` | objet | FACULTATIF. Bornes de montant ([plafonds §2](plafonds.md)). |
+| `locales` | tableau de chaînes | Valeurs de `locale` transmises à l'opérateur ([API §5.1.7](api-paiements.md)). |
 
 **3.2.3.** En cas de doute, `expiry_guaranteed` DOIT valoir `false`.
 
