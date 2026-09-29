@@ -95,7 +95,8 @@ immuables. Les autres champs PEUVENT encore être complétés.
   s'achèvera jamais, et la passerelle documente ce comportement ; c'est la seule exception au
   §3.2, fondée sur l'engagement de l'opérateur et non sur l'horloge seule ;
 - **(d)** `expires_at` est écoulé et un relevé (§6.7) couvrant une période qui s'achève après
-  `expires_at` ne mentionne pas le paiement comme achevé ;
+  `expires_at` ne mentionne pas le paiement comme achevé ; un relevé importé que l'exploitant
+  atteste complet vaut relevé pour cette condition ([relevés §5.3](releves.md)) ;
 - **(e)** l'exploitant l'atteste (§6.8).
 
 **5.4.** Faute de l'une de ces conditions, le paiement reste `pending`.
@@ -122,8 +123,9 @@ passerelle NE DOIT PAS enregistrer `succeeded`. Elle DOIT enregistrer et signale
 un conflit du §6.4, et le paiement reste `pending`.
 
 **6.4. Conflits.** Si l'opérateur rapporte un état contredisant un état terminal enregistré,
-la passerelle NE DOIT PAS modifier le paiement. Elle DOIT enregistrer le conflit de façon
-durable et le signaler à l'exploitant, et NE DOIT PAS le résoudre automatiquement.
+ou un montant différent de celui du paiement (§6.3.2), la passerelle NE DOIT PAS modifier le
+paiement. Elle DOIT enregistrer le conflit de façon durable et le signaler à l'exploitant, et
+NE DOIT PAS le résoudre automatiquement.
 
 **6.5. Sources autoritatives.** Seules ces sources fondent une transition terminale. La
 passerelle DEVRAIT utiliser la première disponible dans cet ordre :
@@ -149,7 +151,7 @@ paiements NE DOIT PAS être traitée comme source (c).
 **6.7. Relevé.** Pour la source (d), un paiement mentionné comme achevé est `succeeded` ;
 mentionné comme refusé ou annulé, il prend l'état terminal correspondant. L'absence d'un
 paiement ne fonde `expired` qu'au titre du §5.3 (d). Un relevé importé manuellement relève de
-la source (e). Le format du relevé et son rapprochement sont dans les [relevés](releves.md).
+la source (e) ; attesté complet, il vaut relevé pour le §5.3 (d). Le format du relevé et son rapprochement sont dans les [relevés](releves.md).
 
 **6.8. Attestation.** Pour la source (e), la passerelle DOIT enregistrer de façon durable
 l'identité de la personne, l'horodatage, l'état attesté et la référence de la preuve. Ce moyen
@@ -213,3 +215,6 @@ affiché tel quel au payeur.
 
 **9.4.** Un déploiement DEVRAIT soumettre l'attestation (§6.8) à une seconde validation
 au-delà d'un montant qu'il fixe.
+
+**9.5.** Le jeton d'une URL de rappel (§6.6) figure dans le chemin : le guide de durcissement
+DEVRAIT rappeler de l'exclure des journaux d'accès du proxy inverse.

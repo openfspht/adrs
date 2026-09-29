@@ -109,8 +109,8 @@ erreurs.
 | Authentification | OAuth 2 `client_credentials`, jeton de 59 s | Identifiant, mot de passe et HMAC-SHA256 à chaque requête |
 | Création | `amount`, `orderId` | `amount`, `orderNumber`, `callbackUrl`, `msisdn`, `language` |
 | `next_action` | `redirect` | `redirect` |
-| Expiration | Date absolue sans fuseau | Durée relative (`expiredAt`, secondes) |
-| URL de retour | Fixe, déclarée au portail marchand (non décrite dans la documentation d'API) : relais [API §7.4](api-paiements.md) | Non documentée : `return_url_required` à `false` |
+| Expiration | Date absolue sans fuseau, échéance du jeton de paiement | Durée relative (`expiredAt`, unité non documentée) |
+| URL de retour | Fixe, déclarée au portail marchand (non décrite dans la documentation d'API) : relais [API §7.4](api-paiements.md), par `orderId` ou, à défaut, `RetrieveTransactionPayment` sur le `transactionId` reçu | Non documentée : `return_url_required` à `false` ; page en WebView, dont l'origine reste visible ([API §4.4](api-paiements.md)) |
 | Rappel | Non documenté | Par paiement, signé sur `orderNumber` et `code` |
 | Consultation | `RetrieveOrderPayment` | `checkTransaction` |
 | Relevé par API | Non | Non |
@@ -138,12 +138,12 @@ Stratégie d'idempotence : recherche par identifiant de commande
 | Opérateur | Valeur | OpenFSP |
 |---|---|---|
 | MonCash | `message: "successful"` | `succeeded` |
-| MonCash | Consultation sans paiement (format non documenté) | aucune tant que le format n'est pas observé en bac à sable ; le paiement reste `pending` jusqu'au relevé ou à l'attestation |
+| MonCash | Consultation sans paiement (format non documenté) | aucune tant que le format n'est pas observé en bac à sable ; `expired` par relevé importé attesté complet ([cycle de vie §5.3](cycle-de-vie.md) (d)) |
 | NatCash | `1` | `succeeded` |
 | NatCash | `-1` | `failed`, `unspecified` |
 | NatCash | `-3` | aucune : `pending`, nouvelle consultation |
 | NatCash | `ERR_TRANSACTION_EXPIRED` | aucune tant qu'on ignore s'il vise le jeton ou le paiement |
-| NatCash | `ERR_TRANSACTION_NOT_FOUND` | aucune : un paiement abandonné reste `pending` jusqu'au relevé ou à l'attestation |
+| NatCash | `ERR_TRANSACTION_NOT_FOUND` | aucune ; un paiement abandonné devient `expired` par relevé importé attesté complet ([cycle de vie §5.3](cycle-de-vie.md) (d)) |
 | NatCash | `ERR_DUPLICATE_REQUEST_ID` | aucune : doublon de requête, pas un dénouement ([idempotence §7.2.1](idempotence.md)) |
 
 ### 8.4. Pertes connues
@@ -157,6 +157,18 @@ Stratégie d'idempotence : recherche par identifiant de commande
   [modèle de données §3.9, §5.5, §7.5](modele-de-donnees.md).
 - Refus des centimes non confirmé : `amount_step` reste absent tant que l'exploitant ne l'a pas
   constaté ([plafonds §1.3](plafonds.md)).
+
+### 8.5. À vérifier en bac à sable
+
+1. Alphabet et longueur de l'`orderId` MonCash ([idempotence §7.2](idempotence.md)).
+2. Réponse de `RetrieveOrderPayment` pour un paiement inexistant ou inachevé.
+3. Réponses d'échec de MonCash.
+4. Sens de `cost` chez MonCash.
+5. Refus des centimes par l'un ou l'autre opérateur.
+6. Rappel MonCash et paramètres transmis à l'URL de retour (`orderId` ou `transactionId`).
+7. Unité d'`expiredAt` chez NatCash.
+8. Portée d'`ERR_TRANSACTION_EXPIRED` : jeton ou paiement.
+9. Format des exports de portail, pour l'import des relevés.
 
 ## 9. Tests
 

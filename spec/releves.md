@@ -29,7 +29,7 @@ journée comptable.
       "type": "payment",
       "amount": { "amount": 125000, "currency": "HTG" },
       "booked_at": "2026-09-28T14:33:02Z",
-      "payment": "pay_01J9ZK3QF8XN2M7VYB4C6D8E0G",
+      "payment": "pay_01JAB7C2D9E4F6G8H1J3K5M7N9",
       "match": "matched",
       "source": "import"
     }
@@ -83,8 +83,8 @@ soustraction.
 
 ## 4. Rapprochement
 
-**4.1.** La passerelle rapproche une ligne d'un paiement par `provider_reference`, puis, si
-l'opérateur la transmet, par `Reference`. Elle NE DOIT PAS rapprocher par montant ou par heure.
+**4.1.** La passerelle rapproche une ligne d'un paiement par `provider_reference`, puis par
+l'identifiant de commande (`provider_order_id`). Elle NE DOIT PAS rapprocher par montant ou par heure.
 
 **4.2.** `match` prend l'une des valeurs :
 
@@ -111,7 +111,9 @@ portent `source: "import"`. L'import DEVRAIT accepter tel quel l'export du porta
 l'opérateur ; sa conversion relève de l'adaptateur.
 
 **5.2.** Une ligne `import` relève de l'attestation ([cycle de vie §6.8](cycle-de-vie.md)) et
-NE DOIT PAS fonder une transition au titre du [cycle de vie §6.7](cycle-de-vie.md).
+NE DOIT PAS fonder une transition au titre du [cycle de vie §6.7](cycle-de-vie.md). Un relevé
+importé attesté complet (§5.3) vaut toutefois relevé pour le [cycle de vie §5.3](cycle-de-vie.md)
+(d) : une seule attestation couvre la journée.
 
 **5.3.** Un relevé importé ne passe `complete` à `true` que sur attestation de l'exploitant que
 l'export couvre la journée entière, enregistrée comme au [cycle de vie §6.8](cycle-de-vie.md).
