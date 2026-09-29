@@ -116,8 +116,9 @@ dont la référence est déjà utilisée.
 **6.2.3.** La `Reference` est la clé de corrélation primaire : elle permet de retrouver un
 paiement dont la création n'a pas reçu de réponse.
 
-**6.2.4.** Une `Reference` PEUT être transmise à l'opérateur. Elle NE DOIT PAS contenir de
-données personnelles ni d'identifiant secret.
+**6.2.4.** La `Reference` n'est pas transmise à l'opérateur : il reçoit l'identifiant de commande
+qui en est dérivé ([idempotence §7.2](idempotence.md)). Elle NE DOIT PAS contenir de données
+personnelles ni d'identifiant secret.
 
 **6.2.5.** L'articulation avec `Idempotency-Key` est dans [idempotence §6](idempotence.md).
 

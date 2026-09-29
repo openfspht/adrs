@@ -51,8 +51,10 @@ rejeté sans effet.
 **4.1.** Chaque scénario est choisi de façon déterministe à la création du paiement ; aucun ne
 survient sans avoir été demandé.
 
-**4.2.** Sélecteur : une `reference` commençant par `MOCK-<SCENARIO>-`. Pour un opérateur
-`mock_*`, la passerelle transmet la `reference` telle quelle ([idempotence §7.2](idempotence.md)).
+**4.2.** Sélecteur : avant la création, la suite déclare le scénario d'un paiement sur la
+surface de contrôle (§5), sous l'identifiant de commande qu'elle calcule avec la clé de
+dérivation fournie en configuration ([idempotence §7.2](idempotence.md),
+[conformité §4.4](conformite.md)). La passerelle n'a aucun chemin propre au simulateur.
 
 **4.3.** Scénarios :
 
@@ -83,14 +85,15 @@ survient sans avoir été demandé.
 **4.4.** Un scénario n'est ajouté que si une spécification définit un comportement impossible à
 provoquer autrement.
 
-**4.5.** Une référence sans préfixe `MOCK-` se comporte comme `SUCCESS`.
+**4.5.** Un paiement sans scénario déclaré se comporte comme `SUCCESS`.
 
 **4.6.** Le simulateur répond après un court délai fixe, jamais instantanément.
 
 ## 5. Contrôle
 
 **5.1.** Une surface de contrôle, distincte de l'interface vue par la passerelle, permet de
-résoudre un paiement en attente, de livrer un rappel retenu et d'avancer l'horloge d'expiration.
+déclarer le scénario d'un paiement à venir, de résoudre un paiement en attente, de livrer un
+rappel retenu et d'avancer l'horloge d'expiration.
 
 **5.2.** Elle est pilotée par la suite de tests, jamais par la passerelle.
 

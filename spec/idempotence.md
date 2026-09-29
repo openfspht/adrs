@@ -107,9 +107,11 @@ passerelle DOIT tenter de l'établir par une source autoritative
 `reference` par HMAC-SHA256, sous une clé propre à la passerelle, encodé dans l'alphabet de
 l'opérateur et portant au moins 128 bits : 26 caractères en base32 minuscule, ou 39 chiffres si
 l'opérateur n'accepte que des chiffres. L'identifiant n'est pas devinable depuis la
-`reference`, et la passerelle le recalcule sans rien stocker. La clé DOIT être conservée aussi
-longtemps que les paiements qu'elle a servi à identifier. Pour un opérateur `mock_*`, la
-`reference` est transmise telle quelle ([serveur simulé §4.2](serveur-simule.md)). Si l'opérateur offre une
+`reference`. La passerelle DOIT le stocker et l'indexer avec le paiement : le retour du payeur,
+les rappels et les relevés de l'opérateur le portent, et un HMAC ne s'inverse pas. Stocké, il
+reste valide après un changement de clé ; une nouvelle clé sert aux nouveaux paiements. Si
+l'opérateur limite l'identifiant à moins de 128 bits, l'adaptateur DOIT le documenter comme
+perte connue. La même dérivation s'applique aux opérateurs `mock_*`. Si l'opérateur offre une
 idempotence ou une recherche par identifiant de commande, la passerelle DOIT s'en servir pour
 établir le dénouement (§7.1).
 

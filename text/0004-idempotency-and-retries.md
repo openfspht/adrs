@@ -21,8 +21,8 @@ peut perdre le paiement. L'information manquante est côté serveur.
 - Aucun renvoi automatique vers un opérateur sans idempotence ni recherche.
 - L'identifiant de commande transmis à l'opérateur est un HMAC de la `reference` sous une clé
   de la passerelle : il tient dans les limites de l'opérateur (50 caractères chez NatCash),
-  n'est pas devinable, et la passerelle retrouve un paiement chez l'opérateur sans rien avoir
-  stocké.
+  n'est pas devinable ; la passerelle le stocke avec le paiement et le rend visible au
+  marchand (`provider_order_id`), qui retrouve ainsi sa commande dans le portail.
 
 Le mécanisme suit le brouillon IETF `Idempotency-Key` et ajoute trois contraintes : le
 cloisonnement par principal, la double protection clé et référence, et le refus de renvoyer

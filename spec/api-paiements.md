@@ -60,6 +60,7 @@ utiliser.
   "amount": { "amount": 125000, "currency": "HTG" },
   "provider": "moncash",
   "provider_reference": null,
+  "provider_order_id": "q3v7m2kxbh4tapewdc5nzr2b3z",
   "payer": { "phone_number": "+50934567890" },
   "description": "Invoice 184",
   "next_action": {
@@ -88,6 +89,7 @@ utiliser.
 | `amount` | `Money` | OBLIGATOIRE | |
 | `provider` | chaîne | OBLIGATOIRE | Identifiant enregistré de l'opérateur (§3.2). |
 | `provider_reference` | `ProviderReference` | FACULTATIF | Peut rester absent. |
+| `provider_order_id` | chaîne | OBLIGATOIRE | Identifiant de commande transmis à l'opérateur ([idempotence §7.2](idempotence.md)) ; retrouve le paiement dans le portail de l'opérateur. |
 | `payer` | objet | FACULTATIF | §3.3. |
 | `description` | chaîne | FACULTATIF | 255 caractères au plus. |
 | `next_action` | objet | conditionnel | OBLIGATOIRE si `pending`, absent si terminal (§4). |
@@ -137,6 +139,10 @@ DOIT PAS l'intégrer dans un cadre qui en masque l'origine.
 
 **4.5.** `next_action.expires_at` PEUT précéder l'`expires_at` du paiement. Son expiration ne
 rend pas le paiement terminal.
+
+**4.6.** Une capacité PEUT ajouter un type ; il n'est produit que pour un opérateur qui annonce
+cette capacité. Un client qui reçoit un type inconnu NE DOIT PAS le traiter comme `none` : le
+paiement attend une action qu'il ne sait pas présenter.
 
 ## 5. Points d'accès
 
@@ -223,7 +229,8 @@ POST /v1/payments/{id}/synchronize
 **5.3.1.** La passerelle relit l'état chez l'opérateur, applique la transition qui en découle
 selon le [cycle de vie](cycle-de-vie.md), et renvoie le paiement.
 
-**5.3.2.** La passerelle DOIT implémenter ce point d'accès et DOIT aussi rapprocher en arrière-plan.
+**5.3.2.** La passerelle DOIT implémenter ce point d'accès et DEVRAIT aussi rapprocher en
+arrière-plan ([cycle de vie §6.2](cycle-de-vie.md)).
 
 **5.3.3.** Sur un paiement terminal, la passerelle NE DOIT PAS appeler l'opérateur et DOIT
 renvoyer le paiement inchangé en `200`.

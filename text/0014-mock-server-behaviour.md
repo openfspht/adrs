@@ -16,7 +16,8 @@ paiement réussi mais aucune de ces défaillances à la demande.
 - Un serveur qui remplace les opérateurs, avec cinq opérateurs simulés aux capacités inégales ;
   `mock_beta` n'a aucune source automatique de finalité.
 - Jamais plus permissif qu'un opérateur réel.
-- Vingt et un scénarios de défaillance déclenchés par un préfixe réservé sur `reference`.
+- Vingt et un scénarios, dont vingt de défaillance, déclarés par la suite sur une surface de
+  contrôle, par identifiant de commande : la passerelle n'a aucun chemin propre au simulateur.
 - Surface de contrôle séparée pour avancer le temps et résoudre les attentes.
 - Déterministe, sans état persistant.
 - Impossible à confondre avec la production : identifiants `mock_`, annonce au démarrage,
@@ -46,5 +47,4 @@ paiement réussi mais aucune de ces défaillances à la demande.
 - Opérateurs simulés avec des API distinctes calquées sur les opérateurs réels, ou une API
   commune.
 - Réinjecter dans les scénarios les comportements observés chez de vrais opérateurs.
-- Un scénario `LIES` rapportant une transition hors d'un état terminal.
 - Retour en arrière de la surface de contrôle.

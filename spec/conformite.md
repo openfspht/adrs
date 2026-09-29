@@ -77,8 +77,9 @@ qu'il désigne ; elle produit le rapport du §7.
 **4.3.** La suite NE DOIT PAS exiger de modification, d'instrumentation ou de mode de test de
 l'implémentation.
 
-**4.4.** Seule la configuration est permise : pointer la passerelle vers le simulateur et fournir
-des identifiants de test.
+**4.4.** Seule la configuration est permise : pointer la passerelle vers le simulateur, fournir
+des identifiants de test et la clé de dérivation des identifiants de commande
+([idempotence §7.2](idempotence.md)).
 
 **4.5.** La suite pilote directement la surface de contrôle du simulateur
 ([serveur simulé §5](serveur-simule.md)).
@@ -120,7 +121,7 @@ clé, autre corps rejeté ([idempotence §3.3](idempotence.md)) ; doublon concur
 | Statut d'opérateur inconnu | paiement `pending` | [cycle de vie §1.1](cycle-de-vie.md) | `mock_alpha`, `UNKNOWN_STATUS` |
 | Rappel non signé, hors URL propre, annonçant un succès | aucune transition | [cycle de vie §6.3](cycle-de-vie.md) | `mock_alpha`, `PENDING_FOREVER`, rappel forgé par la suite |
 | Rappel sur URL propre avec jeton erroné | rejet sans effet | [cycle de vie §6.6](cycle-de-vie.md) | `mock_epsilon`, `PENDING_FOREVER`, rappel forgé par la suite |
-| Relevé sans le paiement, `expires_at` non écoulé | paiement `pending`, pas d'`expired` | [cycle de vie §5.3, §6.7](cycle-de-vie.md) | `mock_epsilon`, `NO_CALLBACK` |
+| Relevé sans le paiement, `expires_at` non écoulé | paiement `pending`, pas d'`expired` | [cycle de vie §5.3, §6.7](cycle-de-vie.md) | `mock_epsilon`, `PENDING_FOREVER` |
 | Requête de l'API tentant de fixer l'état d'un paiement | état inchangé | [cycle de vie §6.8](cycle-de-vie.md) | `mock_beta`, `PENDING_FOREVER` |
 | Opérateur renvoyant des identifiants dans une erreur | `[redacted]` dans `provider_detail` | [authentification §9.5, §9.6](authentification.md) | `mock_alpha`, `CREDENTIAL_ECHO` |
 | Clé inconnue, révoquée, d'un autre environnement | trois `unauthenticated` indiscernables | [authentification §4.7](authentification.md) | aucun ; assisté (§4.7) |
