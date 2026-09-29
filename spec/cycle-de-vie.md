@@ -112,6 +112,13 @@ sollicitation.
 présente DOIT être vérifiée. Dans les autres cas, la passerelle NE DOIT PAS transiter sur le
 contenu du rappel ; elle PEUT le traiter comme un signal pour consulter une autre source.
 
+**6.3.1.** Un rappel signé ne relève du §6.5 (a) que si la signature couvre au moins
+l'identifiant du paiement et son dénouement. Sinon, c'est un signal : la passerelle DEVRAIT
+consulter aussitôt une autre source.
+
+**6.3.2.** Si une source autoritative rapporte un montant différent de celui du paiement, la
+passerelle NE DOIT PAS enregistrer `succeeded` : c'est un conflit (§6.4).
+
 **6.4. Conflits.** Si l'opérateur rapporte un état contredisant un état terminal enregistré,
 la passerelle NE DOIT PAS modifier le paiement. Elle DOIT enregistrer le conflit de façon
 durable et le signaler à l'exploitant, et NE DOIT PAS le résoudre automatiquement.

@@ -22,6 +22,8 @@ pas agi » et « état inconnu ».
 - Cinq sources autoritatives, de la plus immédiate à la plus lente : rappel signé,
   consultation, URL de rappel propre au paiement, relevé, attestation de l'exploitant. Les
   sources disponibles par opérateur sont annoncées dans la découverte de capacités.
+- Un rappel signé ne vaut que si la signature couvre le paiement et son dénouement ; sinon il
+  déclenche une consultation. Un montant contradictoire est un conflit, jamais un succès.
 - L'attestation passe par l'administration de la passerelle, jamais par l'API : une clé
   `payments:write` ne peut pas déclarer ses propres paiements réussis.
 - `failure_reason` est une énumération fermée de huit valeurs, accompagnée de l'erreur brute
