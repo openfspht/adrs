@@ -92,7 +92,8 @@ immuables. Les autres champs PEUVENT encore être complétés.
 - **(b)** `expires_at` est écoulé et une consultation postérieure chez l'opérateur indique
   que le paiement n'est pas achevé ;
 - **(c)** l'opérateur garantit contractuellement qu'un paiement non achevé à `expires_at` ne
-  s'achèvera jamais, et la passerelle documente ce comportement ;
+  s'achèvera jamais, et la passerelle documente ce comportement ; c'est la seule exception au
+  §3.2, fondée sur l'engagement de l'opérateur et non sur l'horloge seule ;
 - **(d)** `expires_at` est écoulé et un relevé (§6.7) couvrant une période qui s'achève après
   `expires_at` ne mentionne pas le paiement comme achevé ;
 - **(e)** l'exploitant l'atteste (§6.8).
@@ -117,7 +118,8 @@ l'identifiant du paiement et son dénouement. Sinon, c'est un signal : la passer
 consulter aussitôt une autre source.
 
 **6.3.2.** Si une source autoritative rapporte un montant différent de celui du paiement, la
-passerelle NE DOIT PAS enregistrer `succeeded` : c'est un conflit (§6.4).
+passerelle NE DOIT PAS enregistrer `succeeded`. Elle DOIT enregistrer et signaler l'écart comme
+un conflit du §6.4, et le paiement reste `pending`.
 
 **6.4. Conflits.** Si l'opérateur rapporte un état contredisant un état terminal enregistré,
 la passerelle NE DOIT PAS modifier le paiement. Elle DOIT enregistrer le conflit de façon

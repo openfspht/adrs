@@ -35,14 +35,15 @@ spécification ne connaît que l'UTC.
 
 ## Conséquences
 
-- Le rapprochement quotidien se fait contre l'API, sans export manuel du portail de
+- Le rapprochement quotidien se fait contre l'API, à partir de l'export du portail de
   l'opérateur.
 - Les fonds reçus hors passerelle deviennent visibles au lieu d'être ignorés.
 - Les montants de ligne peuvent être négatifs (reversement, frais) : c'est l'exception prévue au
   [modèle de données §3.6](../spec/modele-de-donnees.md).
 - Un relevé importé à la main reste une attestation de l'exploitant
   ([cycle de vie §6.8](../spec/cycle-de-vie.md)) : ses lignes sont marquées comme telles.
-- Sans relevé par API, l'import suffit à rapprocher ; il ne suffit pas à fonder la finalité.
+- Sans relevé par API, l'import suffit à rapprocher. Il ne fonde une transition qu'au titre de
+  l'attestation de l'exploitant, qui atteste aussi qu'un relevé importé est complet.
 
 ## Alternatives écartées
 

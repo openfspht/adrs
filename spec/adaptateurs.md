@@ -72,14 +72,16 @@ chaque statut observé correspond à un état OpenFSP ou à rien.
 
 ## 6. Rappels
 
-**6.1.** Rappel signé : vérifier ; un rappel invérifiable est rejeté.
+**6.1.** Rappel signé : vérifier. Une signature invalide ne fonde rien ; le rappel peut au plus
+déclencher une consultation ([cycle de vie §6.3](cycle-de-vie.md)).
 
 **6.2.** Rappel non signé : signal pour consulter une source autoritative, contenu ignoré.
 
 **6.3.** Sans consultation, l'adaptateur déclare les sources restantes (URL propre au paiement,
 relevé) ; sans aucune, chaque paiement attend une attestation ([cycle de vie §6.5](cycle-de-vie.md)).
 
-**6.4.** La protection contre le rejeu s'applique aux rappels signés comme non signés.
+**6.4.** Un rappel rejoué ne peut pas modifier un état terminal ([cycle de vie §3.1](cycle-de-vie.md)).
+Une signature sans horodatage ni nonce, comme celle de NatCash, n'offre pas d'autre protection.
 
 ## 7. Document publié par adaptateur
 
@@ -108,7 +110,7 @@ erreurs.
 | Création | `amount`, `orderId` | `amount`, `orderNumber`, `callbackUrl`, `msisdn`, `language` |
 | `next_action` | `redirect` | `redirect` |
 | Expiration | Date absolue sans fuseau | Durée relative (`expiredAt`, secondes) |
-| URL de retour | Fixe, déclarée au portail : relais [API §7.4](api-paiements.md) | Non documentée |
+| URL de retour | Fixe, déclarée au portail marchand (non décrite dans la documentation d'API) : relais [API §7.4](api-paiements.md) | Non documentée : `return_url_required` à `false` |
 | Rappel | Non documenté | Par paiement, signé sur `orderNumber` et `code` |
 | Consultation | `RetrieveOrderPayment` | `checkTransaction` |
 | Relevé par API | Non | Non |
@@ -136,21 +138,25 @@ Stratégie d'idempotence : recherche par identifiant de commande
 | Opérateur | Valeur | OpenFSP |
 |---|---|---|
 | MonCash | `message: "successful"` | `succeeded` |
-| MonCash | Consultation sans paiement (format non documenté) | aucune ; `expired` au titre du [cycle de vie §5.3](cycle-de-vie.md) (b) après `expires_at` |
+| MonCash | Consultation sans paiement (format non documenté) | aucune tant que le format n'est pas observé en bac à sable ; le paiement reste `pending` jusqu'au relevé ou à l'attestation |
 | NatCash | `1` | `succeeded` |
 | NatCash | `-1` | `failed`, `unspecified` |
 | NatCash | `-3` | aucune : `pending`, nouvelle consultation |
 | NatCash | `ERR_TRANSACTION_EXPIRED` | aucune tant qu'on ignore s'il vise le jeton ou le paiement |
+| NatCash | `ERR_TRANSACTION_NOT_FOUND` | aucune : un paiement abandonné reste `pending` jusqu'au relevé ou à l'attestation |
 | NatCash | `ERR_DUPLICATE_REQUEST_ID` | aucune : doublon de requête, pas un dénouement ([idempotence §7.2.1](idempotence.md)) |
 
 ### 8.4. Pertes connues
 
-- Aucun motif d'échec : `failure_reason` vaut `unspecified`.
+- Aucun motif d'échec : `failure_reason` vaut `unspecified`. MonCash ne documente aucun échec :
+  `failed` y est inatteignable par consultation.
+- Sens de `cost` chez MonCash (montant ou frais) non documenté : il n'alimente ni `fee` ni le
+  contrôle de montant du [cycle de vie §6.3.2](cycle-de-vie.md) avant observation.
 - Aucuns frais : `fee` reste absent.
 - Montants en décimal ou en chaîne, numéros sans `+`, dates MonCash sans fuseau : conversions du
   [modèle de données §3.9, §5.5, §7.5](modele-de-donnees.md).
-- Gourdes entières probables : `amount_step` à `100` tant que les centimes ne sont pas
-  confirmés ([plafonds §2](plafonds.md)).
+- Refus des centimes non confirmé : `amount_step` reste absent tant que l'exploitant ne l'a pas
+  constaté ([plafonds §1.3](plafonds.md)).
 
 ## 9. Tests
 

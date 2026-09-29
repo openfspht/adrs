@@ -20,20 +20,18 @@ journée comptable.
 ```json
 {
   "id": "stm_01J9ZQ0R8V2K4M6N8P0Q2R4S6T",
-  "provider": "moncash",
+  "provider": "natcash",
   "business_date": "2026-09-28",
   "complete": true,
   "entries": [
     {
-      "provider_reference": "MC-8837291",
+      "provider_reference": "1744538637721000911000007",
       "type": "payment",
       "amount": { "amount": 125000, "currency": "HTG" },
-      "fee": { "amount": 1250, "currency": "HTG" },
-      "net_amount": { "amount": 123750, "currency": "HTG" },
       "booked_at": "2026-09-28T14:33:02Z",
       "payment": "pay_01J9ZK3QF8XN2M7VYB4C6D8E0G",
       "match": "matched",
-      "source": "provider"
+      "source": "import"
     }
   ],
   "missing_payments": []
@@ -53,9 +51,9 @@ journée comptable.
 
 **2.3.** Il y a au plus un relevé par (opérateur, journée comptable).
 
-**2.4.** `complete` vaut `true` quand l'opérateur a clos la journée. Un relevé non clos PEUT
-recevoir de nouvelles lignes ; un relevé clos NE DOIT PAS en recevoir par la source
-`provider`.
+**2.4.** `complete` vaut `true` quand l'opérateur a clos la journée ou, pour un relevé importé,
+quand l'exploitant atteste l'import complet (§5.3). Un relevé non clos PEUT recevoir de
+nouvelles lignes ; un relevé clos NE DOIT PAS en recevoir par la source `provider`.
 
 ## 3. Ligne
 
@@ -113,26 +111,28 @@ portent `source: "import"`. L'import DEVRAIT accepter tel quel l'export du porta
 l'opérateur ; sa conversion relève de l'adaptateur.
 
 **5.2.** Une ligne `import` relève de l'attestation ([cycle de vie §6.8](cycle-de-vie.md)) et
-NE DOIT PAS fonder seule une transition au titre du §6.7.
+NE DOIT PAS fonder une transition au titre du [cycle de vie §6.7](cycle-de-vie.md).
 
-**5.3.** Un relevé contenant une ligne `import` NE DOIT PAS avoir `complete` à `true` sur la
-seule foi de l'import.
+**5.3.** Un relevé importé ne passe `complete` à `true` que sur attestation de l'exploitant que
+l'export couvre la journée entière, enregistrée comme au [cycle de vie §6.8](cycle-de-vie.md).
+Le §4.4 s'applique alors.
 
 ## 6. Points d'accès
 
 **6.1.** Lire un relevé :
 
 ```
-GET /v1/statements?provider=moncash&business_date=2026-09-28
+GET /v1/statements?provider=natcash&business_date=2026-09-28
 ```
 
-`provider` et `business_date` sont OBLIGATOIRES. Réponse `200` avec le relevé, ou `not-found`
-s'il n'existe pas encore.
+`provider` et `business_date` sont OBLIGATOIRES. La réponse est une collection d'au plus un
+relevé ; un relevé qui n'existe pas encore donne `200` avec `data` vide
+([API §5.2.2](api-paiements.md)).
 
 **6.2.** Lister les lignes non rapprochées :
 
 ```
-GET /v1/statement-entries?match=unmatched&provider=moncash
+GET /v1/statement_entries?match=unmatched&provider=natcash
 ```
 
 `match` PEUT valoir `unmatched` ou `conflict`. La réponse est une collection
@@ -149,7 +149,7 @@ elle porte `next_cursor`, chaîne opaque à renvoyer dans le paramètre `cursor`
 
 ## 7. Conformité
 
-**7.1.** La suite teste, avec un opérateur simulé qui publie un relevé : une ligne rapprochée,
+**7.1.** La suite teste, avec `mock_epsilon` qui publie un relevé : une ligne rapprochée,
 une ligne orpheline (aucun paiement créé), un paiement `succeeded` absent d'un relevé clos, et
 une journée comptable à cheval sur le changement d'heure.
 
