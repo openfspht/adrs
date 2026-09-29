@@ -19,9 +19,10 @@ peut perdre le paiement. L'information manquante est côté serveur.
 - La clé protège la requête pendant la rétention ; l'unicité permanente de la `reference`
   protège le paiement au-delà.
 - Aucun renvoi automatique vers un opérateur sans idempotence ni recherche.
-- L'identifiant de commande transmis à l'opérateur est dérivé de la `reference` (elle-même, ou
-  son SHA-256 en base32 si l'opérateur limite l'alphabet ou la longueur, 50 caractères chez
-  NatCash). La passerelle retrouve ainsi un paiement chez l'opérateur sans rien avoir stocké.
+- L'identifiant de commande transmis à l'opérateur est un HMAC de la `reference` sous une clé
+  de la passerelle : il tient dans les limites de l'opérateur (50 caractères chez NatCash),
+  n'est pas devinable, et la passerelle retrouve un paiement chez l'opérateur sans rien avoir
+  stocké.
 
 Le mécanisme suit le brouillon IETF `Idempotency-Key` et ajoute trois contraintes : le
 cloisonnement par principal, la double protection clé et référence, et le refus de renvoyer

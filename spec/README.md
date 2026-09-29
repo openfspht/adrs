@@ -18,6 +18,7 @@ accordées (DOIVENT, DEVRAIENT, PEUVENT, OBLIGATOIRES, FACULTATIVE) ont le même
 | exploitant | Qui déploie et administre une passerelle. |
 | client | Application qui appelle la passerelle. |
 | principal | Identité authentifiée d'un client. |
+| propriétaire | La passerelle : elle sert un seul marchand, et toutes ses ressources lui appartiennent. |
 
 ## Documents
 

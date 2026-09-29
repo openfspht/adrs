@@ -202,7 +202,7 @@ Fermé ; l'étendre requiert une ADR. La correspondance avec ISO 20022 est dans
 
 | Code | Statut | `retryable` | `effect` | Condition |
 |---|---|---|---|---|
-| `not-found` | 404 | false | `none` | Ressource inexistante ou invisible pour ce principal. |
+| `not-found` | 404 | false | `none` | Ressource inexistante. |
 
 **9.3.1.** La passerelle DOIT renvoyer `not-found` plutôt que `forbidden` lorsque la
 distinction révélerait l'existence de la ressource.

@@ -4,8 +4,9 @@ Décision : [ADR-0004](../text/0004-idempotency-and-retries.md).
 
 ## 1. Opérations concernées
 
-**1.1.** Toute requête `POST`, `PATCH` ou `DELETE` est une opération idempotente, sauf
-exemption au titre du §1.4.
+**1.1.** Toute requête `POST`, `PATCH` ou `DELETE` de l'API client est une opération
+idempotente, sauf exemption au titre du §1.4. Les points appelés par l'opérateur ou le payeur
+(rappels, retour) ne sont pas concernés.
 
 **1.2.** `GET` et `HEAD` ne sont pas concernées. Un client PEUT les renvoyer librement.
 
@@ -103,9 +104,12 @@ passerelle DOIT tenter de l'établir par une source autoritative
 ([cycle de vie §6.5](cycle-de-vie.md)).
 
 **7.2.** La passerelle DOIT transmettre à l'opérateur un identifiant de commande dérivé de la
-`reference` de façon déterministe : la `reference` elle-même si elle respecte l'alphabet et la
-longueur de l'opérateur, sinon l'encodage base32 en minuscules de son SHA-256, tronqué à la
-longueur maximale de l'opérateur et à 26 caractères au moins. Si l'opérateur offre une
+`reference` par HMAC-SHA256, sous une clé propre à la passerelle, encodé dans l'alphabet de
+l'opérateur et portant au moins 128 bits : 26 caractères en base32 minuscule, ou 39 chiffres si
+l'opérateur n'accepte que des chiffres. L'identifiant n'est pas devinable depuis la
+`reference`, et la passerelle le recalcule sans rien stocker. La clé DOIT être conservée aussi
+longtemps que les paiements qu'elle a servi à identifier. Pour un opérateur `mock_*`, la
+`reference` est transmise telle quelle ([serveur simulé §4.2](serveur-simule.md)). Si l'opérateur offre une
 idempotence ou une recherche par identifiant de commande, la passerelle DOIT s'en servir pour
 établir le dénouement (§7.1).
 

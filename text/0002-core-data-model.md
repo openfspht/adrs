@@ -19,7 +19,7 @@ autre spécification en dépend.
   devise supplémentaire puisse être ajoutée sans changer le format.
 - **Téléphone** : E.164 uniquement. La conversion depuis un format national relève du SDK.
 - **Identifiants** : `ResourceId` opaque et non devinable (UUIDv7 recommandé), `Reference`
-  choisie par le marchand et unique par propriétaire, `ProviderReference` opaque et
+  choisie par le marchand et unique par passerelle, `ProviderReference` opaque et
   facultative.
 - **Horodatage** : RFC 3339 en UTC avec `Z`. Haïti applique l'heure d'été ; un horodatage
   local est ambigu une heure par an.
@@ -35,8 +35,8 @@ autre spécification en dépend.
 ## Conséquences
 
 - L'implémentation correcte est l'implémentation évidente : pas d'analyse décimale.
-- L'unicité de `Reference` est partitionnée par propriétaire : une passerelle multi-marchands
-  ne révèle pas l'activité d'un marchand à un autre.
+- L'unicité de `Reference` porte sur la passerelle entière, qui sert un seul marchand : deux
+  clés du même marchand ne peuvent pas créer deux paiements de même référence.
 - `Fee` permet de produire le reçu exigé par BRH-121 §8. `bearer` vaut `payer` seulement
   quand l'opérateur facture le payeur : BRH-131 interdit la surcharge marchande.
 - La seule donnée personnelle est le numéro de téléphone.

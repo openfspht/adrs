@@ -109,13 +109,9 @@ partie de la valeur opaque.
 **6.2.1.** 1 à 128 caractères parmi `A-Za-z0-9._:/-`, fournie par le marchand à la création,
 immuable.
 
-**6.2.2.** Une `Reference` DOIT être unique parmi les ressources de même type d'un même
-propriétaire. La passerelle DOIT rejeter une création dont la référence est déjà utilisée par
-ce propriétaire.
-
-**6.2.2.1.** L'unicité NE DOIT PAS s'appliquer entre propriétaires : l'index d'unicité DOIT
-être partitionné par propriétaire, et aucun conflit ne DOIT être signalé entre deux
-propriétaires.
+**6.2.2.** Une `Reference` DOIT être unique parmi les ressources de même type d'une même
+passerelle, quel que soit le principal qui l'a créée. La passerelle DOIT rejeter une création
+dont la référence est déjà utilisée.
 
 **6.2.3.** La `Reference` est la clé de corrélation primaire : elle permet de retrouver un
 paiement dont la création n'a pas reçu de réponse.

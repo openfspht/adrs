@@ -44,7 +44,8 @@ un tableau nu : `{ "data": [] }`.
 ## 2. Capacité de base
 
 **2.1.** Les trois opérations du §5 forment la capacité `payments`. Une passerelle conforme DOIT
-les implémenter pour chaque opérateur qu'elle prend en charge.
+les implémenter pour chaque opérateur qu'elle prend en charge ; sans `payments.lookup`, la
+synchronisation répond `capability-not-supported` ([capacités §5.3](capacites.md)).
 
 **2.2.** Un client NE DOIT PAS être tenu d'interroger la découverte de capacités avant de les
 utiliser.
@@ -82,7 +83,7 @@ utiliser.
 | Champ | Type | Présence | Notes |
 |---|---|---|---|
 | `id` | `ResourceId` | OBLIGATOIRE | Opaque. |
-| `reference` | `Reference` | OBLIGATOIRE | Unique par propriétaire. |
+| `reference` | `Reference` | OBLIGATOIRE | Unique par passerelle. |
 | `status` | chaîne | OBLIGATOIRE | [Cycle de vie §1](cycle-de-vie.md). |
 | `amount` | `Money` | OBLIGATOIRE | |
 | `provider` | chaîne | OBLIGATOIRE | Identifiant enregistré de l'opérateur (§3.2). |
@@ -100,8 +101,8 @@ utiliser.
 | `metadata` | `Metadata` | FACULTATIF | |
 
 **3.2.** `provider` correspond à `^[a-z0-9_]{1,32}$` et DOIT être l'identifiant du
-[registre des opérateurs](https://github.com/openfspht/openfsp/blob/main/registries/providers.md).
-Il est OBLIGATOIRE même si la passerelle ne sert qu'un opérateur.
+[registre des opérateurs](https://github.com/openfspht/openfsp/blob/main/registries/providers.md),
+ou un identifiant `mock_*` du [serveur simulé](serveur-simule.md). Il est OBLIGATOIRE même si la passerelle ne sert qu'un opérateur.
 
 **3.3.** `payer` porte un seul champ, `phone_number` (`PhoneNumber`).
 
@@ -165,7 +166,7 @@ POST /v1/payments
 | `provider` | OBLIGATOIRE | §5.1.1. |
 | `payer` | conditionnel | Selon l'opérateur (§5.1.2). |
 | `description` | FACULTATIF | |
-| `return_url` | conditionnel | OBLIGATOIRE si l'opérateur utilise `redirect` (§5.1.3). |
+| `return_url` | conditionnel | OBLIGATOIRE si l'opérateur annonce `return_url_required` ([capacités §3.2.2](capacites.md)). |
 | `expires_at` | FACULTATIF | Demande, pas garantie (§5.1.4). |
 | `locale` | FACULTATIF | Langue de la page du payeur : `fr`, `ht` ou `en` (§5.1.7). |
 | `metadata` | FACULTATIF | |
@@ -266,7 +267,8 @@ point de retour par opérateur, que l'exploitant déclare chez celui-ci. Ce poin
 - DEVRAIT déclencher une synchronisation (§5.3) ;
 - redirige en `303` vers la `return_url` enregistrée du paiement, jamais vers une URL reçue en
   paramètre ;
-- répond `404` sans redirection si le paiement est inconnu.
+- répond `404` sans redirection si le paiement est inconnu, sans distinguer un identifiant mal
+  formé d'un identifiant inconnu.
 
 **7.5.** Le point de retour n'est pas authentifié ([authentification §1.1](authentification.md))
 et DOIT être limité en débit.
@@ -297,10 +299,11 @@ sequenceDiagram
 
 ## 9. Sécurité
 
-**9.1.** La recherche par référence DOIT être cloisonnée au principal authentifié.
+**9.1.** La recherche par référence porte sur les paiements de la passerelle, que tout principal
+autorisé voit ([authentification §5.5](authentification.md)).
 
-**9.2.** Un paiement d'un autre principal DOIT être rapporté `not-found`
-([erreurs §9.3.1](erreurs.md)).
+**9.2.** Une clé sans la portée requise reçoit `forbidden`
+([authentification §6.4](authentification.md)).
 
 **9.3.** La documentation client DEVRAIT préciser que `description` peut atteindre le payeur et
 l'opérateur, contrairement à `metadata`.
