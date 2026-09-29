@@ -21,7 +21,7 @@ Limites permanentes, qui fondent la position réglementaire du projet.
 
 | Composant | Rôle | Technologie |
 |---|---|---|
-| Spécification | Règles normatives : modèle de données, cycle de vie, capacités, erreurs, idempotence, notifications. | Markdown, OpenAPI |
+| Spécification | Règles normatives : modèle de données, cycle de vie, capacités, erreurs, idempotence, notifications. | Markdown ; description OpenAPI à publier avec l'implémentation |
 | Passerelle | Serveur auto-hébergé : protocole OpenFSP d'un côté, API des opérateurs de l'autre. | Kotlin, Spring Boot |
 | Serveur simulé | Imite les opérateurs, défaillances comprises. | Kotlin, Spring Boot |
 | Bibliothèques clientes | Clients minces du protocole. | TypeScript, PHP, Python |
@@ -51,8 +51,8 @@ les opérateurs.
 - La relation entre le marchand et son opérateur est inchangée.
 - Aucun service multi-locataire.
 - En contrepartie, le marchand exploite un service sensible : la passerelle doit être
-  exploitable par une petite équipe (binaire unique, réglages sûrs par défaut, guide de
-  durcissement).
+  exploitable par une petite équipe (binaire unique et sa base de données, réglages sûrs par
+  défaut, guide de durcissement).
 
 ## Principes de conception
 
@@ -80,7 +80,7 @@ les opérateurs.
 | Identifiants | RFC 9562, UUID version 7 |
 | Signature des notifications | RFC 9421 |
 | Idempotence | Brouillon IETF `Idempotency-Key` |
-| Description d'API | OpenAPI 3.1 |
+| Description d'API | OpenAPI 3.1, à publier avec l'implémentation |
 | Authentification | Clé porteur ; OAuth 2.0 possible en amont |
 | Découverte | RFC 8615 |
 | Cadre réglementaire | Loi de 2012, circulaires BRH 121, 126, 131 ([références](../text/references.md)) |
@@ -93,13 +93,14 @@ opérateurs, donc aucune compensation n'est requise.
 
 ## Conformité
 
-| Niveau | Cible | Vérification |
-|---|---|---|
-| 1 | Client | Suite jouant la passerelle. |
-| 2 | Passerelle | Suite jouant le client, simulateur jouant les opérateurs. |
-| 3 | Opérateur natif | L'opérateur expose OpenFSP ; la passerelle devient inutile pour lui. |
+| Cible | Vérification |
+|---|---|
+| Client | Suite jouant la passerelle. |
+| Passerelle | Suite jouant le client, simulateur jouant les opérateurs. |
+| Opérateur natif | L'opérateur expose OpenFSP ; la passerelle devient inutile pour lui. |
 
-Le niveau 3 est l'objectif du projet. Règles : [conformité](conformite.md).
+L'opérateur natif est l'objectif du projet. Le niveau, lui, est Core, avec des profils par
+capacité. Règles : [conformité](conformite.md).
 
 ## Langue
 

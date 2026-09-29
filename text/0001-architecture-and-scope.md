@@ -29,8 +29,10 @@ fragmentation qu'elle prétend réduire.
 - Devise unique : HTG.
 - Spécification en français, qui fait foi ; mots-clés normatifs en français ; champs et
   valeurs en anglais.
-- Échelle de conformité à trois niveaux ; le niveau 3, un opérateur qui implémente OpenFSP
-  nativement, est l'objectif.
+- Trois cibles de conformité : client, passerelle, opérateur natif. Un opérateur qui implémente
+  OpenFSP nativement est l'objectif.
+- La passerelle a un état durable (base de données) : idempotence, conflits, attestations,
+  audit, événements et relevés l'exigent.
 
 ## Conséquences
 
@@ -58,6 +60,5 @@ fragmentation qu'elle prétend réduire.
 
 - Préférence d'acheminement exprimée par le client quand plusieurs opérateurs sont configurés.
 - Modélisation de l'identité du payeur au-delà du numéro de téléphone.
-- Passerelle sans état ou avec base de données.
 - Adaptateurs dans le dépôt de la passerelle ou en greffons.
 - Documentation en créole : question de registre, sans vocabulaire de supervision arrêté.
