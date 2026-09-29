@@ -78,6 +78,8 @@ Sources citées : [`text/references.md`](text/references.md). Identifiants d'op�
 | [0014](text/0014-mock-server-behaviour.md) Serveur simulé | [serveur-simule](spec/serveur-simule.md) | Informatif |
 | [0015](text/0015-conformance-levels-and-suite.md) Conformité | [conformite](spec/conformite.md) | Normatif |
 | [0016](text/0016-conformance-marks-and-naming.md) Revendications et usage du nom | [marques](spec/marques.md) | Processus |
+| [0017](text/0017-statements-and-reconciliation.md) Relevés et rapprochement | [releves](spec/releves.md) | Normatif |
+| [0018](text/0018-amount-limits.md) Plafonds de montant | [plafonds](spec/plafonds.md) | Normatif |
 
 Aucune ADR n'est encore acceptée et rien n'est implémenté. Suivront : transferts,
-remboursement, capture et annulation, acheminement multi-opérateur, reporting de rapprochement.
+remboursement, capture et annulation, acheminement multi-opérateur.

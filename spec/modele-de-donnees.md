@@ -13,6 +13,7 @@ Décision : [ADR-0002](../text/0002-core-data-model.md).
 | `Reference` | chaîne choisie par le marchand | `"INV-2026-00184"` |
 | `ProviderReference` | chaîne opaque | `"MC-8837291"` |
 | `Timestamp` | chaîne, RFC 3339 UTC | `"2026-08-17T14:32:07.412Z"` |
+| `Date` | chaîne, `full-date` RFC 3339 | `"2026-09-28"` ([relevés §1](releves.md)) |
 | `Fee` | objet | `{"amount": {"amount": 1250, "currency": "HTG"}, "bearer": "merchant"}` |
 | `Metadata` | objet de chaînes | `{"order_id": "184"}` |
 
@@ -51,7 +52,7 @@ DOIVENT valider cet intervalle explicitement.
 **3.5.** Une implémentation NE DOIT PAS représenter un montant par une valeur à virgule
 flottante, même transitoirement.
 
-**3.6.** Sauf disposition contraire d'une spécification de capacité, un montant de requête
+**3.6.** Sauf disposition contraire d'une autre spécification, un montant de requête
 DOIT être strictement positif. Un montant nul DOIT être rejeté.
 
 **3.7.** Deux `Money` sont égaux si leurs `amount` sont égaux.

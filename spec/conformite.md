@@ -42,7 +42,8 @@ opérateur derrière l'implémentation (§5.7).
 
 **3.1.** **Core** : la capacité de base ([API §2](api-paiements.md)) et tout ce qui est
 obligatoire quelle que soit la capacité : modèle de données, cycle de vie, idempotence, erreurs,
-authentification, découverte de capacités, tests de refus du §5.4.
+authentification, découverte de capacités, plafonds lorsqu'ils sont déclarés, tests de refus
+du §5.4.
 
 **3.2.** Core est obligatoire : sans lui, une implémentation n'est pas conforme.
 
@@ -52,7 +53,7 @@ une capacité non annoncée.
 | Profil | Capacité | Spécification |
 |---|---|---|
 | `payments.lookup` | Consultation autoritative | [capacités §5](capacites.md) |
-| `payments.statement` | Relevé de l'opérateur | [cycle de vie §6.7](cycle-de-vie.md) |
+| `payments.statement` | Relevé de l'opérateur | [cycle de vie §6.7](cycle-de-vie.md), [relevés](releves.md) |
 | `webhooks.per_payment_url` | URL de rappel propre au paiement | [cycle de vie §6.6](cycle-de-vie.md) |
 | `webhooks.emit` | Événements signés | [webhooks](webhooks.md) |
 | `confirmation_requests` | Décision minutée du payeur | [demandes de confirmation](demandes-de-confirmation.md) |

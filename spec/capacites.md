@@ -28,7 +28,7 @@ annoncé.
 |---|---|---|
 | `payments` | spécifié, obligatoire | Créer, lire, synchroniser un paiement ([API](api-paiements.md)). |
 | `payments.lookup` | spécifié | Consultation autoritative de l'état chez l'opérateur (§5). |
-| `payments.statement` | spécifié | Relevé des transactions par canal authentifié ([cycle de vie §6.7](cycle-de-vie.md)). |
+| `payments.statement` | spécifié | Relevé des transactions par canal authentifié ([cycle de vie §6.7](cycle-de-vie.md)), lisible par le client ([relevés](releves.md)). |
 | `payments.fee` | spécifié | L'opérateur rapporte les frais ([modèle de données §8](modele-de-donnees.md)). |
 | `payments.refund` | enregistré | Remboursement d'un paiement capturé. |
 | `payments.capture` | enregistré | Autorisation et capture séparées. |
@@ -125,6 +125,7 @@ Authentifié.
 | `payer_required` | booléen | `payer` exigé à la création. |
 | `return_url_required` | booléen | `return_url` exigée à la création. |
 | `expiry_guaranteed` | booléen | Garantie du [cycle de vie §5.3](cycle-de-vie.md) c. |
+| `limits` | objet | FACULTATIF. Bornes de montant ([plafonds §2](plafonds.md)). |
 
 **3.2.3.** En cas de doute, `expiry_guaranteed` DOIT valoir `false`.
 

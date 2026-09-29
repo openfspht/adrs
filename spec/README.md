@@ -32,6 +32,8 @@ OPTIONAL au sens des RFC 2119 et RFC 8174, lorsqu'ils sont en capitales.
 | [Authentification](authentification.md) | Normatif |
 | [Demandes de confirmation](demandes-de-confirmation.md) | Normatif |
 | [Paiement de proximité](proximite.md) | Normatif |
+| [Relevés et rapprochement](releves.md) | Normatif |
+| [Plafonds de montant](plafonds.md) | Normatif |
 | [Conformité](conformite.md) | Normatif |
 | [Revendications et usage du nom](marques.md) | Processus |
 | [Architecture et périmètre](architecture.md) | Informatif |

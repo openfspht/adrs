@@ -188,6 +188,7 @@ Fermé ; l'étendre requiert une ADR. La correspondance avec ISO 20022 est dans
 | `idempotency-key-required` | 400 | false | `none` | `Idempotency-Key` absente ([idempotence §1.3](idempotence.md)). |
 | `invalid-field` | 422 | false | `none` | Contenu invalide. Porte `errors`. |
 | `capability-not-supported` | 422 | false | `none` | Capacité non annoncée. |
+| `amount-out-of-range` | 422 | false | `none` | Montant hors des bornes annoncées ([plafonds §3](plafonds.md)). |
 | `idempotency-key-reused` | 422 | false | `none` | Même clé, corps différent ([idempotence §3.3](idempotence.md)). |
 
 ### 9.2. Authentification

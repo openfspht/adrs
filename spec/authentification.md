@@ -107,6 +107,7 @@ restreignent les actions, pas la visibilité.
 | `capabilities:read` | Découverte de capacités ([capacités §3.2](capacites.md)). |
 | `payments:read` | Lire un paiement, rechercher par référence ([API §5.2](api-paiements.md)). |
 | `payments:write` | Créer et synchroniser un paiement ([API §5.1, §5.3](api-paiements.md)). |
+| `statements:read` | Lire les relevés et leurs lignes ([relevés §6](releves.md)). |
 
 **6.3.** Aucune portée n'en implique une autre.
 

@@ -140,7 +140,7 @@ paiements NE DOIT PAS être traitée comme source (c).
 **6.7. Relevé.** Pour la source (d), un paiement mentionné comme achevé est `succeeded` ;
 mentionné comme refusé ou annulé, il prend l'état terminal correspondant. L'absence d'un
 paiement ne fonde `expired` qu'au titre du §5.3 (d). Un relevé importé manuellement relève de
-la source (e).
+la source (e). Le format du relevé et son rapprochement sont dans les [relevés](releves.md).
 
 **6.8. Attestation.** Pour la source (e), la passerelle DOIT enregistrer de façon durable
 l'identité de la personne, l'horodatage, l'état attesté et la référence de la preuve. Ce moyen
@@ -161,7 +161,7 @@ d'API relèvent des [erreurs](erreurs.md), pas du cycle de vie.
 | `insufficient_funds` | Solde du payeur insuffisant. |
 | `payer_canceled` | Le payeur a abandonné ou refusé. |
 | `payer_unreachable` | Compte ou numéro du payeur injoignable. |
-| `limit_exceeded` | Plafond de l'opérateur ou réglementaire dépassé. |
+| `limit_exceeded` | Plafond de l'opérateur ou réglementaire dépassé, non annoncé ([plafonds §3.4](plafonds.md)). |
 | `rejected_by_provider` | Refus propre à l'opérateur (risque, conformité). |
 | `provider_error` | Défaillance rapportée par l'opérateur. |
 | `unspecified` | Échec sans motif exploitable. |

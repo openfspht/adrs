@@ -161,7 +161,7 @@ POST /v1/payments
 | Champ | Présence | Notes |
 |---|---|---|
 | `reference` | OBLIGATOIRE | Doublon : `reference-conflict`. |
-| `amount` | OBLIGATOIRE | Strictement positif. |
+| `amount` | OBLIGATOIRE | Strictement positif, dans les [plafonds](plafonds.md). |
 | `provider` | OBLIGATOIRE | §5.1.1. |
 | `payer` | conditionnel | Selon l'opérateur (§5.1.2). |
 | `description` | FACULTATIF | |

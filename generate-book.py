@@ -18,6 +18,7 @@ SPEC_GROUPS = [
     ("Fondations", ["modele-de-donnees", "cycle-de-vie", "idempotence", "erreurs"]),
     ("Protocole", ["api-paiements", "capacites", "webhooks", "authentification"]),
     ("Paiement au comptoir", ["demandes-de-confirmation", "proximite"]),
+    ("Rapprochement et plafonds", ["releves", "plafonds"]),
     ("Conformité", ["conformite", "marques"]),
     ("Documents informatifs", ["architecture", "iso-20022", "adaptateurs", "serveur-simule"]),
 ]
@@ -33,6 +34,8 @@ SPEC_TITLES = {
     "authentification": "Authentification",
     "demandes-de-confirmation": "Demandes de confirmation",
     "proximite": "Paiement de proximité",
+    "releves": "Relevés et rapprochement",
+    "plafonds": "Plafonds de montant",
     "conformite": "Conformité",
     "marques": "Usage du nom",
     "architecture": "Architecture",
