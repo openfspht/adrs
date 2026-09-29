@@ -18,10 +18,11 @@ d'autorisation en amont. Ces mesures NE DOIVENT PAS remplacer le §3.
 ## 2. Format de clé
 
 **2.1.** Forme `ofsp_<env>_<secret>`, où `<env>` vaut `live` ou `test` et `<secret>` compte au
-moins 32 caractères parmi `A-Za-z0-9` :
+moins 34 caractères parmi `A-Za-z0-9`, de sorte que la part non stockée en clair (§4.4) porte
+au moins 128 bits :
 
 ```
-ofsp_live_7Kq2NfPzR4wYb9LdHt3XvA6mSjE0uCgB
+ofsp_live_7Kq2NfPzR4wYb9LdHt3XvA6mSjE0uCgBp8
 ```
 
 **2.2.** `<secret>` DOIT venir d'un générateur cryptographique et porter au moins 128 bits
@@ -40,7 +41,7 @@ respect du §2.1.
 **3.1.** Un client DOIT envoyer la clé dans `Authorization`, schéma `Bearer` (RFC 9110) :
 
 ```
-Authorization: Bearer ofsp_live_7Kq2NfPzR4wYb9LdHt3XvA6mSjE0uCgB
+Authorization: Bearer ofsp_live_7Kq2NfPzR4wYb9LdHt3XvA6mSjE0uCgBp8
 ```
 
 **3.2.** La passerelle NE DOIT PAS accepter une clé dans un paramètre de requête, un corps, un
