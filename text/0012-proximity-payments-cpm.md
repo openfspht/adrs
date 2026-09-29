@@ -14,7 +14,8 @@ implémentation native.
 
 ## Décision
 
-- Le payeur affiche un jeton opaque, à usage unique, de courte durée (180 secondes au plus),
+- Le payeur affiche un jeton opaque, à usage unique, de courte durée (180 secondes au plus
+  recommandées),
   d'au moins 64 bits, ne révélant pas son identité. Seule la chaîne est spécifiée, pas le
   support.
 - Le marchand soumet `payer_token` avec le montant sur `POST /v1/payments` ; le jeton est résolu

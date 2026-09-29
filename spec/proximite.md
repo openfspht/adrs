@@ -67,7 +67,7 @@ le journaliser, ni le renvoyer.
 {
   "reference": "POS-2026-09-06-0042",
   "amount": { "amount": 45000, "currency": "HTG" },
-  "provider": "moncash",
+  "provider": "mock_gamma",
   "payer_token": "8mQ2xR7vK4nZ",
   "description": "Counter sale"
 }
@@ -86,7 +86,7 @@ la fois `payer_token` et `payer` DOIT être rejetée avec `invalid-field`.
   "reference": "POS-2026-09-06-0042",
   "status": "pending",
   "amount": { "amount": 45000, "currency": "HTG" },
-  "provider": "moncash",
+  "provider": "mock_gamma",
   "payer": null,
   "next_action": {
     "type": "confirmation_request",
@@ -162,7 +162,9 @@ où l'annulation perd contre une approbation.
 **5.4.2.** Un client NE DOIT PAS resoumettre le jeton dans une nouvelle vente et DOIT d'abord lire
 par référence.
 
-**5.4.3.** Aucun paiement trouvé : la vente peut reprendre avec un jeton neuf.
+**5.4.3.** Aucun paiement trouvé : si la dernière réponse portait `effect: unknown`, le client
+DOIT d'abord rejouer la création avec la même `Idempotency-Key` jusqu'à obtenir un dénouement
+déterminé. La vente ne reprend avec un jeton neuf qu'ensuite.
 
 **5.4.4.** Paiement trouvé : le client reprend l'attente de la demande de confirmation.
 
