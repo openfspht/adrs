@@ -20,6 +20,14 @@ jobs:
           enable-cache: false
       - run: uvx --from actionlint-py==1.7.12.25 actionlint
 
+  links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - run: python3 check-links.py
+
   image:
     runs-on: ubuntu-latest
     steps:
