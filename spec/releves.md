@@ -109,7 +109,8 @@ du [cycle de vie §6.7](cycle-de-vie.md).
 ## 5. Import
 
 **5.1.** L'exploitant PEUT importer un relevé par l'administration de la passerelle. Ses lignes
-portent `source: "import"`.
+portent `source: "import"`. L'import DEVRAIT accepter tel quel l'export du portail de
+l'opérateur ; sa conversion relève de l'adaptateur.
 
 **5.2.** Une ligne `import` relève de l'attestation ([cycle de vie §6.8](cycle-de-vie.md)) et
 NE DOIT PAS fonder seule une transition au titre du §6.7.
@@ -142,8 +143,8 @@ elle porte `next_cursor`, chaîne opaque à renvoyer dans le paramètre `cursor`
 **6.3.** Les deux points d'accès exigent la portée `statements:read`
 ([authentification §6](authentification.md)).
 
-**6.4.** Ils ne sont servis que pour un opérateur qui annonce `payments.statement`. Sinon, la
-passerelle DOIT répondre `capability-not-supported`.
+**6.4.** Ils sont servis pour tout opérateur. Les lignes viennent de l'opérateur, s'il annonce
+`payments.statement`, ou d'un import (§5).
 
 
 ## 7. Conformité

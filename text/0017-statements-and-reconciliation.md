@@ -29,8 +29,9 @@ spécification ne connaît que l'UTC.
 - La passerelle rapproche chaque ligne d'un paiement et publie le résultat : rapprochée, sans
   paiement, en conflit. Elle publie aussi les paiements `succeeded` absents d'un relevé clos.
 - Une ligne sans paiement ne crée jamais de paiement.
-- La ressource est offerte là où `payments.statement` est annoncée. Nouvelle portée
-  `statements:read`.
+- La ressource est offerte pour tout opérateur. Les lignes viennent de l'opérateur
+  (`payments.statement`) ou d'un import de l'export de son portail : ni MonCash ni NatCash
+  n'exposent de relevé par API. Nouvelle portée `statements:read`.
 
 ## Conséquences
 
@@ -41,8 +42,7 @@ spécification ne connaît que l'UTC.
   [modèle de données §3.6](../spec/modele-de-donnees.md).
 - Un relevé importé à la main reste une attestation de l'exploitant
   ([cycle de vie §6.8](../spec/cycle-de-vie.md)) : ses lignes sont marquées comme telles.
-- Un opérateur sans relevé authentifié n'offre pas de relevé : le marchand garde son outil
-  actuel.
+- Sans relevé par API, l'import suffit à rapprocher ; il ne suffit pas à fonder la finalité.
 
 ## Alternatives écartées
 
