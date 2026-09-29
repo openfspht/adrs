@@ -108,7 +108,7 @@ erreurs.
 | Création | `amount`, `orderId` | `amount`, `orderNumber`, `callbackUrl`, `msisdn`, `language` |
 | `next_action` | `redirect` | `redirect` |
 | Expiration | Date absolue sans fuseau | Durée relative (`expiredAt`, secondes) |
-| URL de retour | Fixe, déclarée au portail : relais [API §7.4](api-paiements.md) | Aucune ; le rappel suffit |
+| URL de retour | Fixe, déclarée au portail : relais [API §7.4](api-paiements.md) | Non documentée |
 | Rappel | Non documenté | Par paiement, signé sur `orderNumber` et `code` |
 | Consultation | `RetrieveOrderPayment` | `checkTransaction` |
 | Relevé par API | Non | Non |
@@ -136,18 +136,18 @@ Stratégie d'idempotence : recherche par identifiant de commande
 | Opérateur | Valeur | OpenFSP |
 |---|---|---|
 | MonCash | `message: "successful"` | `succeeded` |
-| MonCash | `404` sur la consultation | aucune ; `expired` au titre du [cycle de vie §5.3](cycle-de-vie.md) (b) après `expires_at` |
+| MonCash | Consultation sans paiement (format non documenté) | aucune ; `expired` au titre du [cycle de vie §5.3](cycle-de-vie.md) (b) après `expires_at` |
 | NatCash | `1` | `succeeded` |
 | NatCash | `-1` | `failed`, `unspecified` |
 | NatCash | `-3` | aucune : `pending`, nouvelle consultation |
-| NatCash | `ERR_TRANSACTION_EXPIRED` | `expired` au titre du [cycle de vie §5.3](cycle-de-vie.md) (a) |
+| NatCash | `ERR_TRANSACTION_EXPIRED` | aucune tant qu'on ignore s'il vise le jeton ou le paiement |
 | NatCash | `ERR_DUPLICATE_REQUEST_ID` | aucune : doublon de requête, pas un dénouement ([idempotence §7.2.1](idempotence.md)) |
 
 ### 8.4. Pertes connues
 
 - Aucun motif d'échec : `failure_reason` vaut `unspecified`.
 - Aucuns frais : `fee` reste absent.
-- Montants en décimal ou en chaîne, numéros sans `+`, dates sans fuseau : conversions du
+- Montants en décimal ou en chaîne, numéros sans `+`, dates MonCash sans fuseau : conversions du
   [modèle de données §3.9, §5.5, §7.5](modele-de-donnees.md).
 - Gourdes entières probables : `amount_step` à `100` tant que les centimes ne sont pas
   confirmés ([plafonds §2](plafonds.md)).

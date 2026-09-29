@@ -25,7 +25,7 @@ autre spécification en dépend.
   local est ambigu une heure par an.
 - **Données de l'opérateur** : montants convertis sans flottant, numéros convertis en E.164,
   horodatages sans décalage lus à l'heure de Port-au-Prince. MonCash et NatCash envoient des
-  décimaux, des numéros sans `+` et des dates sans fuseau.
+  montants décimaux et des numéros sans `+` ; MonCash date sans fuseau.
 - **Frais** (`Fee`) : montant et partie qui l'a supporté. Absent signifie « non connu ».
 - **JSON** : champs inconnus ignorés en réponse, rejetés en requête : une faute de frappe sur
   `amount` ne doit pas produire un paiement d'un autre montant.
