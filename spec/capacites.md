@@ -33,11 +33,11 @@ annoncé.
 | `payments.refund` | enregistré | Remboursement d'un paiement capturé. |
 | `payments.capture` | enregistré | Autorisation et capture séparées. |
 | `payments.cancel` | enregistré | Annulation avant achèvement. |
-| `payments.proximity_cpm` | enregistré | Résolution native de jetons présentés par le payeur ([proximité](proximite.md)). |
-| `confirmation_requests` | enregistré | Confirmation minutée par le payeur ([demandes de confirmation](demandes-de-confirmation.md)). |
-| `confirmation_requests.cancel` | enregistré | Retrait d'une demande avant réponse du payeur. |
+| `payments.proximity_cpm` | spécifié | Résolution native de jetons présentés par le payeur ([proximité](proximite.md)). |
+| `confirmation_requests` | spécifié | Confirmation minutée par le payeur ([demandes de confirmation](demandes-de-confirmation.md)). |
+| `confirmation_requests.cancel` | spécifié | Retrait d'une demande avant réponse du payeur. |
 | `transfers` | enregistré | Envoi de fonds à un bénéficiaire. |
-| `webhooks.emit` | enregistré | Événements signés vers le client ([webhooks](webhooks.md)). |
+| `webhooks.emit` | spécifié | Événements signés vers le client ([webhooks](webhooks.md)). |
 | `webhooks.verify` | spécifié | Rappels signés par l'opérateur ([cycle de vie §6.5](cycle-de-vie.md) a). |
 | `webhooks.per_payment_url` | spécifié | URL de rappel propre à chaque paiement ([cycle de vie §6.6](cycle-de-vie.md)). |
 
@@ -101,7 +101,7 @@ Authentifié.
         "next_actions": ["redirect"],
         "payer_required": false,
         "return_url_required": true,
-        "expiry_guaranteed": true,
+        "expiry_guaranteed": false,
         "locales": []
       }
     }

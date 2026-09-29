@@ -15,7 +15,7 @@ marchand d'un plafond du payeur.
 ## Décision
 
 - Les bornes par transaction du compte marchand sont annoncées par opérateur dans les
-  capacités (`payments.limits`).
+  capacités (membre `limits` de l'objet `payments`).
 - Elles sont déclarées par l'exploitant d'après son contrat. Une borne inconnue est absente,
   jamais devinée.
 - Une granularité (`amount_step`) couvre les opérateurs qui n'acceptent que des gourdes
