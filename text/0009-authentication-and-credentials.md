@@ -21,9 +21,9 @@ d'URL, ou distingue clé inconnue et clé révoquée.
 - Stockage en condensé SHA-256, comparaison en temps constant, condensé factice sur préfixe
   inconnu. Pas de hachage lent : l'entropie rend la devinette hors ligne sans objet.
 - Une seule erreur `unauthenticated` pour tous les échecs ; le détail va dans les journaux.
-- Le principal, pas la clé, porte l'idempotence et la visibilité : une rotation ne réinitialise
+- Le principal, pas la clé, porte l'idempotence : une rotation ne réinitialise
   aucune protection.
-- Trois portées sans implication ; `forbidden` si la portée manque.
+- Quatre portées sans implication ; `forbidden` si la portée manque.
 - Plusieurs clés actives par principal, révocation effective en 60 secondes au plus, clé
   révoquée conservée sans secret pour l'audit.
 - Identifiants d'opérateur : chargés depuis l'environnement ou un gestionnaire de secrets,

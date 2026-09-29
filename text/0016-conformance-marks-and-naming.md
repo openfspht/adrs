@@ -28,8 +28,8 @@ s'appliquerait plus aisément qu'aux autres transformerait un intérêt déclar�
 ## Conséquences
 
 - Aucun octroi, donc rien à refuser à un concurrent ni à s'accorder à soi-même.
-- La loi de 2012 (art. 85) exige d'écarter le conflit d'intérêts quand c'est possible et de le
-  neutraliser sinon ; l'absence d'octroi l'écarte, la publication le neutralise.
+- La loi de 2012 (art. 85), qui lie les banques et non le projet, sert d'étalon : écarter le
+  conflit d'intérêts quand c'est possible, le neutraliser sinon ; l'absence d'octroi l'écarte, la publication le neutralise.
 - Un fork peut revendiquer la conformité s'il réussit la suite.
 - Le nom reste détenu par Karako Systems en dépositaire, avec les engagements de GOVERNANCE §8.
 

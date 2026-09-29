@@ -48,6 +48,5 @@ l'argent.
 ## Questions ouvertes
 
 - Capacités différenciées par principal.
-- Montants minimum et maximum par opérateur.
 - Découverte d'un `next_action` QR.
 - Place de `display_name` dans le protocole.

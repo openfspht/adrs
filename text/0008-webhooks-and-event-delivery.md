@@ -33,7 +33,7 @@ marchand qui en intègre trois écrit trois vérifications, dont une fausse, jus
 - Les événements portent le numéro du payeur : TLS avec validation obligatoire, et discipline
   de journalisation côté abonné (BRH-131 §6.10.4).
 - L'interdiction de supprimer un événement abandonné ou de désactiver un point d'accès sans
-  trace permet la notification d'incident (loi de 2012 art. 84, BRH-131 §6.10.7).
+  trace conserve l'historique qu'exige l'analyse d'un incident.
 - L'émission est une capacité (`webhooks.emit`), hors socle.
 
 ## Alternatives écartées
@@ -51,6 +51,5 @@ marchand qui en intègre trois écrit trois vérifications, dont une fausse, jus
 ## Questions ouvertes
 
 - Durée de conservation d'un événement abandonné.
-- `webhooks.emit` par opérateur ou pour toute la passerelle.
 - Acquittement par `sequence`.
 - Profil de livraison rapide pour les demandes de confirmation.

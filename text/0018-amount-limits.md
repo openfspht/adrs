@@ -45,6 +45,6 @@ marchand d'un plafond du payeur.
 
 ## Questions ouvertes
 
-- Annonce d'un plafond de solde du compte marchand : MonCash le signale
-  (`Maximum Account Balance`) sans l'exposer.
+- Annonce d'un plafond de solde du compte marchand. MonCash renvoie `Maximum Account Balance`
+  sur ses transferts, sans exposer le plafond.
 - Bornes différentes selon le type de `next_action`.

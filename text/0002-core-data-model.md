@@ -59,7 +59,6 @@ autre spécification en dépend.
 
 ## Questions ouvertes
 
-- Réutilisation d'une même `Reference` chez deux opérateurs.
 - Rendre obligatoire le préfixe de type des identifiants.
 - Limites des métadonnées, fixées sans mesure.
 - Convention d'affichage des montants pour les SDK.

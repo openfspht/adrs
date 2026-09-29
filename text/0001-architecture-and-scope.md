@@ -40,8 +40,9 @@ fragmentation qu'elle prétend réduire.
   est public, et un opérateur natif rend son adaptateur inutile.
 - Hors du champ de la loi de 2012 (art. 2, 3 et 7) et de BRH-121 §2, sous réserve de
   l'article 6, qui permet à la BRH d'étendre la loi.
-- La spécification versionnée répond au devoir de documentation de BRH-126 §3 p), et la suite
-  de conformité à l'audit triennal de BRH-121 §5, qui n'a pas d'étalon.
+- La spécification versionnée sert de modèle au devoir de documentation de BRH-126 §3 p). La
+  suite de conformité fournit un étalon à l'auditeur d'un FSP qui implémente OpenFSP (BRH-121
+  §5), sans démontrer à elle seule l'interopérabilité entre FSP.
 - Le marchand exploite un service sensible : l'exploitabilité est une exigence de sécurité.
 - OpenFSP ne résout pas le paiement d'un opérateur vers un autre : c'est le rôle d'un
   commutateur (PRONAP).
@@ -49,7 +50,7 @@ fragmentation qu'elle prétend réduire.
 ## Alternatives écartées
 
 - **Bibliothèques par langage sans serveur** : `opérateurs × langages` adaptateurs, identifiants
-  dispersés, aucun chemin vers le niveau 3.
+  dispersés, aucun chemin vers un opérateur natif.
 - **Spécification sans implémentation de référence** : citée, pas adoptée.
 - **Service hébergé multi-locataire** : place le projet sur le chemin des fonds et agrège les
   identifiants.

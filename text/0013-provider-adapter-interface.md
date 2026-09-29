@@ -45,5 +45,4 @@ stockage, renvoyer un débit expiré.
   adoption libre par les opérateurs ; piste probable, un petit ensemble interne et un point
   d'extension documenté.
 - Document d'adaptateur lisible par machine.
-- Refus local d'un paiement (montant minimum) avant appel à l'opérateur.
 - Signalement d'un changement de comportement de l'opérateur.

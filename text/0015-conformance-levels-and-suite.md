@@ -26,8 +26,9 @@ imposent deux audits triennaux sans prescrire d'étalon.
 ## Conséquences
 
 - Une implémentation qui émule une capacité échoue à Core.
-- Un rapport est une preuve directe pour l'audit d'interopérabilité (BRH-121 §5), partielle pour
-  l'audit de sécurité (BRH-126 §3 t)).
+- Un rapport fournit à l'auditeur d'un FSP qui implémente OpenFSP un étalon pour la part
+  applicative de l'audit d'interopérabilité (BRH-121 §5), et une pièce pour l'audit de sécurité
+  (BRH-126 §3 t)).
 - La suite versionnée tient lieu de registre de documentation pour la surface de conformité
   (BRH-126 §3 p)).
 - Un résultat obtenu contre le simulateur ne vaut pas preuve contre un opérateur réel.

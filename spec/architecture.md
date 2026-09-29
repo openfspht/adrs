@@ -58,9 +58,9 @@ les opérateurs.
 
 | Principe | Règle détaillée |
 |---|---|
-| Une opération absente est déclarée absente, jamais émulée ; le socle se limite à créer et lire un paiement. | [Capacités](capacites.md) |
+| Une opération absente est déclarée absente, jamais émulée ; le socle se limite à créer, lire et synchroniser un paiement. | [Capacités](capacites.md) |
 | Un montant est un entier en centimes de gourde, avec devise explicite. | [Modèle de données §3](modele-de-donnees.md) |
-| Toute opération qui modifie l'état est idempotente. | [Idempotence](idempotence.md) |
+| Toute création est idempotente ; seule la synchronisation en est exemptée. | [Idempotence](idempotence.md) |
 | La référence du marchand est la clé de corrélation. | [Modèle de données §6.2](modele-de-donnees.md) |
 | Les états forment une machine explicite ; un état terminal n'est jamais quitté. | [Cycle de vie](cycle-de-vie.md) |
 | Les erreurs sont neutres, l'erreur de l'opérateur est conservée. | [Erreurs](erreurs.md) |
@@ -134,7 +134,7 @@ version mineure peut rompre la compatibilité.
 | Loi de 2012, art. 3 et 7 | L'activité est définie par la réception de fonds du public avec obligation de restitution ; OpenFSP ne reçoit aucun fonds. |
 | Loi de 2012, art. 6 | La BRH peut étendre la loi aux activités assimilables sans loi nouvelle : la position est exacte en l'état du droit, pas acquise. |
 | BRH-121 §2 | Trois catégories de sociétés visées ; ni l'éditeur ni le marchand qui déploie n'en relèvent. |
-| BRH-121 §5 | Interopérabilité exigée, audit externe triennal, aucun étalon : la spécification et la suite en fournissent un. |
+| BRH-121 §5 | Interopérabilité du FSP avec les autres acteurs, audit externe triennal, aucun étalon : la suite en fournit un pour la part applicative, sans démontrer l'interopérabilité entre FSP. |
 | BRH-121 §8, §13.1, §13.4, §13.5, §15 | Reçu, traçabilité, registre, irrévocabilité, données : voir l'[annexe ISO 20022 §9](iso-20022.md). |
 | BRH-126 §2, §3 n), §3 p), §3 t) | Propriétés de sécurité, exigences avant production, documentation tenue à jour, audit triennal. |
 | BRH-131 §6.1 s), §6.9 c) | Signaler et compenser les pertes dues au système ; responsabilités des parties : `effect` et le catalogue d'erreurs. |
