@@ -23,6 +23,7 @@ transitions d'état, ni l'audit.
 | Lire un paiement chez l'opérateur | [API §5.3](api-paiements.md), `payments.lookup` | non |
 | Ingérer un rappel | [cycle de vie §6.3, §6.6](cycle-de-vie.md) | non |
 | Lire un relevé | [cycle de vie §6.7](cycle-de-vie.md), `payments.statement` | non |
+| Convertir un export de portail | [relevés §5](releves.md) | non |
 | Résoudre un jeton de payeur | [proximité §3](proximite.md), `payments.proximity_cpm` | non |
 | Retirer une demande de confirmation | [demandes de confirmation §7](demandes-de-confirmation.md), `confirmation_requests.cancel` | non |
 
@@ -93,8 +94,66 @@ relevé) ; sans aucune, chaque paiement attend une attestation ([cycle de vie §
 | Identifiants requis et mode de fourniture | [Authentification §9.1](authentification.md). |
 | Identifiant d'opérateur | [Registre](https://github.com/openfspht/openfsp/blob/main/registries/providers.md). |
 
-## 8. Tests
+## 8. Profils observés
 
-**8.1.** Sans opérateur, on teste la correspondance (données) et les refus (réponses enregistrées).
+D'après la documentation des opérateurs (MonCash REST API, NatCash Merchant Online Integration
+2.0). À confirmer contre les environnements de test : les deux documents contiennent des
+erreurs.
 
-**8.2.** La fidélité des réponses enregistrées à l'opérateur réel n'est pas testable ainsi.
+### 8.1. Correspondance
+
+| | MonCash | NatCash |
+|---|---|---|
+| Authentification | OAuth 2 `client_credentials`, jeton de 59 s | Identifiant, mot de passe et HMAC-SHA256 à chaque requête |
+| Création | `amount`, `orderId` | `amount`, `orderNumber`, `callbackUrl`, `msisdn`, `language` |
+| `next_action` | `redirect` | `redirect` |
+| Expiration | Date absolue sans fuseau | Durée relative (`expiredAt`, secondes) |
+| URL de retour | Fixe, déclarée au portail : relais [API §7.4](api-paiements.md) | Aucune ; le rappel suffit |
+| Rappel | Non documenté | Par paiement, signé sur `orderNumber` et `code` |
+| Consultation | `RetrieveOrderPayment` | `checkTransaction` |
+| Relevé par API | Non | Non |
+| Frais rapportés | Non | Non |
+| Langue | Non | `fr`, `ht`, `en` |
+| Annulation après succès | Non | Dans les 30 minutes (futur `payments.refund`) |
+| Transferts | `Transfert`, statut et solde prépayé (futur `transfers`) | Non |
+
+### 8.2. Capacités annonçables
+
+| | MonCash | NatCash |
+|---|---|---|
+| `payments` | oui | oui |
+| `payments.lookup` | oui | oui |
+| `webhooks.verify` | non | oui ([cycle de vie §6.3.1](cycle-de-vie.md)) |
+| `webhooks.per_payment_url` | non | oui |
+| `payments.statement` | non : relevé par import ([relevés §5](releves.md)) | non : relevé par import |
+| `payments.fee` | non | non |
+
+Stratégie d'idempotence : recherche par identifiant de commande
+([idempotence §7.2](idempotence.md)) pour les deux.
+
+### 8.3. Statuts
+
+| Opérateur | Valeur | OpenFSP |
+|---|---|---|
+| MonCash | `message: "successful"` | `succeeded` |
+| MonCash | `404` sur la consultation | aucune ; `expired` au titre du [cycle de vie §5.3](cycle-de-vie.md) (b) après `expires_at` |
+| NatCash | `1` | `succeeded` |
+| NatCash | `-1` | `failed`, `unspecified` |
+| NatCash | `-3` | aucune : `pending`, nouvelle consultation |
+| NatCash | `ERR_TRANSACTION_EXPIRED` | `expired` au titre du [cycle de vie §5.3](cycle-de-vie.md) (a) |
+| NatCash | `ERR_DUPLICATE_REQUEST_ID` | aucune : doublon de requête, pas un dénouement ([idempotence §7.2.1](idempotence.md)) |
+
+### 8.4. Pertes connues
+
+- Aucun motif d'échec : `failure_reason` vaut `unspecified`.
+- Aucuns frais : `fee` reste absent.
+- Montants en décimal ou en chaîne, numéros sans `+`, dates sans fuseau : conversions du
+  [modèle de données §3.9, §5.5, §7.5](modele-de-donnees.md).
+- Gourdes entières probables : `amount_step` à `100` tant que les centimes ne sont pas
+  confirmés ([plafonds §2](plafonds.md)).
+
+## 9. Tests
+
+**9.1.** Sans opérateur, on teste la correspondance (données) et les refus (réponses enregistrées).
+
+**9.2.** La fidélité des réponses enregistrées à l'opérateur réel n'est pas testable ainsi.
