@@ -43,7 +43,7 @@ Le corps d'une livraison est un seul objet JSON, jamais un tableau ni un lot.
 | `type` | chaîne | OBLIGATOIRE | Registre du §3.2. |
 | `created_at` | `Timestamp` | OBLIGATOIRE | Enregistrement de la transition, pas la tentative de livraison. |
 | `sequence` | entier | OBLIGATOIRE | Ordinal par ressource (§8). |
-| `resource_type` | chaîne | OBLIGATOIRE | `payment`. |
+| `resource_type` | chaîne | OBLIGATOIRE | `payment` ou `confirmation_request`. |
 | `resource_id` | `ResourceId` | OBLIGATOIRE | Ressource concernée. |
 | `reference` | `Reference` | OBLIGATOIRE | Référence du marchand. |
 | `previous_status` | chaîne | conditionnel | OBLIGATOIRE pour un changement de statut. |
@@ -76,6 +76,7 @@ transition.
 | `payment.failed` | Un paiement entre en `failed`. | OBLIGATOIRE |
 | `payment.expired` | Un paiement entre en `expired`. | OBLIGATOIRE |
 | `payment.canceled` | Un paiement entre en `canceled`. | OBLIGATOIRE |
+| `confirmation_request.approved`, `.declined`, `.expired`, `.canceled` | Une demande de confirmation entre dans cet état ([demandes de confirmation §8.4](demandes-de-confirmation.md)). | OBLIGATOIRE |
 
 **3.3.** Un abonné DOIT ignorer un `type` inconnu et DOIT néanmoins répondre `2xx`.
 
@@ -140,9 +141,9 @@ valoir `openfsp-webhook`.
 
 ```
 Signature-Input: sig1=("@method" "@target-uri" "content-type" "content-digest" \
-  "openfsp-event-id" "openfsp-event-type");created=1755441371;expires=1755441671;\
+  "openfsp-event-id" "openfsp-event-type");created=1786977371;expires=1786977671;\
   keyid="gw-2026-08";nonce="Zk9tQ1p2WXhLbFEyNw";alg="ed25519";tag="openfsp-webhook"
-Signature: sig1=:MEUCIQDf…:
+Signature: sig1=:bT8xVq2Lw0nR5cJ3kYpA7fHd…:
 ```
 
 **5.4.** La passerelle DOIT prendre en charge `ed25519` et l'utiliser par défaut. Elle PEUT
@@ -176,12 +177,13 @@ PAS répondre `2xx`, et DEVRAIT répondre `400`.
 
 ## 6. Clés
 
-**6.1.** La passerelle DOIT publier ses clés de vérification en JWK Set à
-`GET /v1/webhooks/keys`, dans l'enveloppe `data` ([API §1.12](api-paiements.md)).
+**6.1.** La passerelle DOIT publier ses clés de vérification en JWK Set (RFC 7517) à
+`GET /v1/webhooks/keys`, sous le membre `keys`. Par exception à l'enveloppe de collection
+([API §1.12](api-paiements.md)), le format reste celui que lisent les bibliothèques JOSE.
 
 ```json
 {
-  "data": [
+  "keys": [
     {
       "kid": "gw-2026-08",
       "kty": "OKP",
@@ -201,8 +203,8 @@ nom JOSE `EdDSA` et du nom RFC 9421 `ed25519`.
 **6.3.** `openfsp_status` vaut `active` (clé de signature) ou `retired` (vérification seulement).
 Une clé retirée du service NE DOIT PAS être publiée.
 
-**6.4.** Une nouvelle clé DOIT être publiée au moins 24 heures avant de signer, et une clé DOIT
-rester publiée au moins 24 heures après sa dernière utilisation.
+**6.4.** Hors compromission (§12.3), une nouvelle clé DOIT être publiée au moins 24 heures avant
+de signer, et une clé DOIT rester publiée au moins 24 heures après sa dernière utilisation.
 
 **6.5.** Un abonné DEVRAIT mettre l'ensemble de clés en cache et le rafraîchir sur un `keyid`
 inconnu, avec limitation de débit. Il NE DOIT PAS le rafraîchir à chaque livraison.
@@ -258,7 +260,8 @@ attendre l'événement manquant.
 
 **9.1.** Une livraison échouée DOIT être renvoyée avec un retrait exponentiel et une gigue.
 
-**9.2.** Calendrier minimal, depuis la première tentative :
+**9.2.** Calendrier minimal, chaque délai courant depuis la tentative précédente (31 heures au
+total) :
 
 | Tentative | Délai |
 |---|---|
@@ -316,7 +319,8 @@ DOIT refaire ce contrôle à chaque livraison.
 **12.2.** Un TLS mutuel PEUT s'ajouter à la signature et NE DOIT PAS la remplacer.
 
 **12.3.** En cas de compromission soupçonnée, la passerelle DEVRAIT pouvoir signer
-immédiatement avec une nouvelle clé.
+immédiatement avec une nouvelle clé, par exception au §6.4, et retirer sans délai la clé
+compromise de l'ensemble publié.
 
 **12.4.** Un abonné DEVRAIT journaliser `id`, `type` et `sequence`, et NE DEVRAIT PAS
 journaliser le corps. Valeurs de signature et nonces NE DEVRAIENT PAS être journalisés.
