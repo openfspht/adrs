@@ -81,5 +81,5 @@ Sources citées : [`text/references.md`](text/references.md). Identifiants d'op�
 | [0017](text/0017-statements-and-reconciliation.md) Relevés et rapprochement | [releves](spec/releves.md) | Normatif |
 | [0018](text/0018-amount-limits.md) Plafonds de montant | [plafonds](spec/plafonds.md) | Normatif |
 
-Aucune ADR n'est encore acceptée et rien n'est implémenté. Suivront : transferts,
+Toutes les ADR sont au statut Proposée ; l'implémentation suit. Prochaines ADR : transferts,
 remboursement, capture et annulation, acheminement multi-opérateur.
