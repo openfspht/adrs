@@ -18,6 +18,8 @@ marchand d'un plafond du payeur.
   capacités (`payments.limits`).
 - Elles sont déclarées par l'exploitant d'après son contrat. Une borne inconnue est absente,
   jamais devinée.
+- Une granularité (`amount_step`) couvre les opérateurs qui n'acceptent que des gourdes
+  entières.
 - Une création hors bornes est rejetée avant tout appel à l'opérateur, avec une nouvelle erreur
   `amount-out-of-range` (422) qui rappelle les bornes.
 - Les plafonds du payeur (niveau de portefeuille, cumul journalier, seuils réglementaires)
@@ -43,5 +45,6 @@ marchand d'un plafond du payeur.
 
 ## Questions ouvertes
 
-- Annonce d'un plafond de solde du compte marchand.
+- Annonce d'un plafond de solde du compte marchand : MonCash le signale
+  (`Maximum Account Balance`) sans l'exposer.
 - Bornes différentes selon le type de `next_action`.

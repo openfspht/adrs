@@ -19,7 +19,8 @@ FACULTATIF `limits` :
 ```json
 "limits": {
   "min_amount": { "amount": 1000, "currency": "HTG" },
-  "max_amount": { "amount": 7500000, "currency": "HTG" }
+  "max_amount": { "amount": 7500000, "currency": "HTG" },
+  "amount_step": { "amount": 100, "currency": "HTG" }
 }
 ```
 
@@ -27,6 +28,7 @@ FACULTATIF `limits` :
 |---|---|---|---|
 | `min_amount` | `Money` | FACULTATIF | Absent signifie non connu. |
 | `max_amount` | `Money` | FACULTATIF | Absent signifie non connu. |
+| `amount_step` | `Money` | FACULTATIF | Le montant DOIT en être un multiple. `100` : gourdes entières. |
 
 **2.2.** Une borne absente signifie « non connue », pas « illimitée ». Un client NE DOIT PAS
 l'afficher comme une absence de plafond.
@@ -37,7 +39,7 @@ l'afficher comme une absence de plafond.
 ## 3. Contrôle
 
 **3.1.** À la création ([API §5.1](api-paiements.md)), la passerelle DOIT rejeter un montant
-inférieur à `min_amount` ou supérieur à `max_amount`, avec
+inférieur à `min_amount`, supérieur à `max_amount` ou non multiple de `amount_step`, avec
 `amount-out-of-range`, avant tout appel à l'opérateur.
 
 **3.2.** La réponse porte les bornes en membres d'extension :
@@ -51,7 +53,8 @@ inférieur à `min_amount` ou supérieur à `max_amount`, avec
   "effect": "none",
   "request_id": "req_01J9ZR2T4V6X8Z0B2D4F6H8K0M",
   "min_amount": { "amount": 1000, "currency": "HTG" },
-  "max_amount": { "amount": 7500000, "currency": "HTG" }
+  "max_amount": { "amount": 7500000, "currency": "HTG" },
+  "amount_step": { "amount": 100, "currency": "HTG" }
 }
 ```
 
