@@ -33,7 +33,9 @@ socle devrait être implémentable par chaque opérateur.
 - La ressource porte six des sept mentions du reçu de BRH-121 §8 ; la nature du service reste
   au marchand (`description` ou `metadata`).
 - `provider` et `provider_reference` tracent chaque paiement jusqu'à l'opérateur.
-- Ajouter un type de `next_action` est une rupture ; ajouter un champ facultatif ne l'est pas.
+- Ajouter un type de `next_action` hors d'une capacité est une rupture ; une capacité peut en
+  introduire un, produit seulement pour les opérateurs qui l'annoncent. Ajouter un champ
+  facultatif n'est pas une rupture.
 - Les conventions du §1 lient toutes les spécifications suivantes.
 
 ## Alternatives écartées

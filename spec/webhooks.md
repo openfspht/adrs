@@ -300,7 +300,7 @@ lecture ou synchronisation ([API §5.2, §5.3](api-paiements.md)).
 
 ## 11. Conformité
 
-**11.1.** Passerelle conforme : émet chaque type du §3.2, signe selon le §5, publie les clés
+**11.1.** Passerelle conforme : émet chaque type du §3.2 relevant d'une capacité qu'elle annonce, signe selon le §5, publie les clés
 selon le §6, renvoie selon le §9, n'émet jamais d'événement sans transition (§1.4).
 
 **11.2.** Abonné conforme : vérifie selon le §5.9, rejette selon le §5.12, déduplique selon le
