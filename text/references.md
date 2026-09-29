@@ -3,9 +3,8 @@
 Chaque source qu'une ADR cite, avec une clé stable, pour qu'une citation soit vérifiable
 plutôt que décorative.
 
-Une ADR cite une source par sa clé entre crochets, `[BRH-126]`, et liste les clés qu'elle
-emploie dans sa propre section *Références*. Ce fichier porte la citation complète une seule
-fois, de sorte qu'une correction se fait à un endroit et corrige avec elle toutes les ADR qui
+Une ADR ou un document de spécification cite une source par sa clé, `BRH-126`. Ce fichier
+porte la citation complète une seule fois, de sorte qu'une correction se fait à un endroit et corrige avec elle toutes les ADR qui
 s'y appuient.
 
 Les clés sont permanentes. Une source remplacée garde sa clé et reçoit une note ; elle n'est
@@ -20,8 +19,8 @@ conforme.
 Les références **informatives** expliquent pourquoi une décision a été prise, ou consignent
 d'où vient une affirmation. Une implémentation peut être correcte sans jamais en ouvrir une.
 
-Une ADR de la voie Standards tient les deux listes séparées. Une ADR informative ou de
-processus n'a que des références informatives, puisqu'elle n'impose rien.
+Un document normatif peut s'appuyer sur les deux. Un document informatif ou de processus n'a
+que des références informatives, puisqu'il n'impose rien.
 
 Citer une source oblige l'ADR citante à être exacte sur ce que la source dit, y compris là où
 la source est en désaccord avec OpenFSP. Une citation qui supprime la part d'une source qui

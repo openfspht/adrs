@@ -18,7 +18,8 @@ façon fiable si un débit a eu lieu. Les clients encodent leurs propres supposi
 - Deux extensions obligatoires : `retryable` (renvoi sans danger) et `effect` (`none` ou
   `unknown`), indépendantes l'une de l'autre.
 - `request_id` sur toute erreur.
-- Catalogue fermé de 18 types, avec statut, `retryable` et `effect` fixés par type.
+- Catalogue fermé, avec statut, `retryable` et `effect` fixés par type : 19 types de base et 3
+  propres au paiement de proximité.
 - Un paiement refusé est une réponse `200` avec `status: failed`, jamais une erreur.
 - `provider_detail` relaie l'erreur brute de l'opérateur, sans interprétation, caviardée.
 - `idempotency-key-reused` en `422`, `idempotency-request-in-progress` en `409`, comme le
