@@ -164,7 +164,9 @@ par référence.
 
 **5.4.3.** Aucun paiement trouvé : si la dernière réponse portait `effect: unknown`, le client
 DOIT d'abord rejouer la création avec la même `Idempotency-Key` jusqu'à obtenir un dénouement
-déterminé. La vente ne reprend avec un jeton neuf qu'ensuite.
+déterminé. La vente ne reprend avec un jeton neuf qu'ensuite. Sur ce rejeu, si l'opérateur
+répond que le jeton est déjà résolu, la passerelle DOIT rapporter `payer-token-used` avec
+`effect: unknown`, et le client DOIT relire par référence avant toute nouvelle vente.
 
 **5.4.4.** Paiement trouvé : le client reprend l'attente de la demande de confirmation.
 

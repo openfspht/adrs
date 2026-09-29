@@ -250,7 +250,7 @@ d'hôte).
 |---|---|---|---|---|
 | `payer-token-invalid` | 422 | false | `none` | Jeton non reconnu par l'opérateur ([proximité §6](proximite.md)). |
 | `payer-token-expired` | 422 | false | `none` | Jeton reconnu, durée de vie dépassée. |
-| `payer-token-used` | 409 | false | `none` | Jeton reconnu, déjà résolu. |
+| `payer-token-used` | 422 | false | `none` | Jeton reconnu, déjà résolu. `unknown` sur le rejeu d'une tentative indéterminée ([proximité §5.4.3](proximite.md)). |
 
 ## 10. Langue
 
