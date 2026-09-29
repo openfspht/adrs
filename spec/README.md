@@ -6,7 +6,8 @@ Règles normatives. Les raisons de chaque choix sont dans les [ADR](https://gith
 
 DOIT, NE DOIT PAS, DEVRAIT, NE DEVRAIT PAS, PEUT, OBLIGATOIRE, RECOMMANDÉ et FACULTATIF
 s'interprètent comme MUST, MUST NOT, SHOULD, SHOULD NOT, MAY, REQUIRED, RECOMMENDED et
-OPTIONAL au sens des RFC 2119 et RFC 8174, lorsqu'ils sont en capitales.
+OPTIONAL au sens des RFC 2119 et RFC 8174, lorsqu'ils sont en capitales. Leurs formes
+accordées (DOIVENT, DEVRAIENT, PEUVENT, OBLIGATOIRES, FACULTATIVE) ont le même sens.
 
 ## Vocabulaire
 
