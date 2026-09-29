@@ -23,6 +23,9 @@ autre spécification en dépend.
   facultative.
 - **Horodatage** : RFC 3339 en UTC avec `Z`. Haïti applique l'heure d'été ; un horodatage
   local est ambigu une heure par an.
+- **Données de l'opérateur** : montants convertis sans flottant, numéros convertis en E.164,
+  horodatages sans décalage lus à l'heure de Port-au-Prince. MonCash et NatCash envoient des
+  décimaux, des numéros sans `+` et des dates sans fuseau.
 - **Frais** (`Fee`) : montant et partie qui l'a supporté. Absent signifie « non connu ».
 - **JSON** : champs inconnus ignorés en réponse, rejetés en requête : une faute de frappe sur
   `amount` ne doit pas produire un paiement d'un autre montant.

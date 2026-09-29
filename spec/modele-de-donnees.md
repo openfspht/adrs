@@ -59,6 +59,10 @@ DOIT être strictement positif. Un montant nul DOIT être rejeté.
 
 **3.8.** Aucun arrondi.
 
+**3.9.** Un montant reçu de l'opérateur DOIT être converti depuis sa forme décimale textuelle,
+sans passer par un flottant. Un montant qui n'est pas exact au centime rend la réponse
+inexploitable (`provider-error`).
+
 ## 4. Devise
 
 **4.1.** La seule devise est la gourde : `currency` DOIT valoir `"HTG"` (ISO 4217, exposant
@@ -77,6 +81,10 @@ DOIT être strictement positif. Un montant nul DOIT être rejeté.
 rejeter toute valeur non conforme au §5.1. Un SDK PEUT convertir une saisie locale en E.164.
 
 **5.4.** Un numéro syntaxiquement valide NE DOIT PAS être traité comme vérifié.
+
+**5.5.** Un numéro reçu de l'opérateur DOIT être converti en E.164 selon le format documenté de
+cet opérateur (`50937007294` devient `"+50937007294"`). Un numéro dont la conversion n'est pas
+certaine est omis.
 
 ## 6. Identifiants
 
@@ -144,6 +152,10 @@ FACULTATIVES. Un client DOIT les accepter ; un serveur NE DOIT PAS les exiger.
 
 **7.4.** Les horodatages NE DOIVENT PAS servir d'ordre total entre événements. Un client NE
 DOIT PAS en dériver un séquencement.
+
+**7.5.** Un horodatage reçu de l'opérateur sans décalage est interprété dans le fuseau
+`America/Port-au-Prince`. Une heure ambiguë (retour à l'heure d'hiver) prend l'instant le plus
+tardif. Une durée relative (`expiredAt: 300`) court à partir de la réception de la réponse.
 
 ## 8. `Fee`
 
