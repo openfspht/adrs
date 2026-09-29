@@ -71,3 +71,9 @@ passerelle ne connaissait pas, prend `failed` avec `limit_exceeded`
 
 **4.1.** La suite teste le §3.1 aux deux bornes (borne acceptée, borne dépassée d'un centime)
 et vérifie qu'aucun appel n'atteint l'opérateur simulé.
+
+## 5. Sécurité
+
+**5.1.** Les bornes révèlent une partie du contrat du marchand. Elles ne sont servies que par le
+point d'accès authentifié des capacités, jamais par le descripteur public
+([capacités §3.1.1](capacites.md)).

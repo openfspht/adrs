@@ -14,7 +14,7 @@ avec une échéance.
   "reference": "POS-2026-09-06-0042",
   "status": "awaiting",
   "amount": { "amount": 45000, "currency": "HTG" },
-  "provider": "moncash",
+  "provider": "mock_gamma",
   "created_at": "2026-09-06T13:04:19.882Z",
   "updated_at": "2026-09-06T13:04:19.882Z",
   "expires_at": "2026-09-06T13:05:19.882Z",
@@ -177,7 +177,8 @@ cas et NE DOIT PAS traiter la réponse `202` comme une preuve du résultat.
 
 ## 8. Lecture et événements
 
-**8.1.** `GET /v1/confirmation_requests/{id}`, portée `payments:read`.
+**8.1.** `GET /v1/confirmation_requests/{id}` et `GET /v1/confirmation_requests?reference={reference}`
+(collection, comme l'[API §5.2.2](api-paiements.md)), portée `payments:read`.
 
 **8.2.** Tant qu'elle est `awaiting`, la demande est atteignable par le `next_action` du paiement ;
 ensuite par son identifiant ou la référence du paiement.
@@ -205,3 +206,11 @@ implémentation native de l'opérateur ou le simulateur.
 **9.4.** La suite exerce au minimum : approbation, refus, expiration, annulation gagnante,
 annulation perdante contre une approbation simultanée, approbation suivie d'un échec de
 capture.
+
+## 10. Sécurité
+
+**10.1.** Chaque demande sollicite un payeur sur son appareil. La passerelle DEVRAIT limiter le
+débit de création de demandes par principal et par numéro de payeur.
+
+**10.2.** `outcome_reason` NE DOIT PAS révéler l'état du compte du payeur au-delà de
+l'énumération du §6.
