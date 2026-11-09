@@ -1,0 +1,7 @@
+.git
+.gitignore
+book
+src
+node_modules
+Dockerfile
+.dockerignore
